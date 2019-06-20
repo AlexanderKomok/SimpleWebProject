@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>Hello @User.Identity.Name</p>
+
+    <form method="post" asp-controller="Account" asp-action="LogOff" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <input type="submit" class="btn btn-link navbar-btn navbar-link" value="Выход" />
+            </li>
+</ul>
+    </form>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li><a asp-controller="Account" asp-action="Login"><span class="glyphicon glyphicon-user"></span>Вход</a></li>
+        <li><a asp-controller="Account" asp-action="Register"><span class="glyphicon glyphicon-log-in"></span>Регистрация</a></li>
+    </ul>
+}
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+
+    
+</div>
+
+
