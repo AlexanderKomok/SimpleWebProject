@@ -31,13 +31,20 @@ namespace WebAppTry3
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationContext>();
+                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddRoles<IdentityRole>();
 
-            services.AddMvc();
+            services.AddMvc()
+            .AddRazorPagesOptions(options =>
+             {
+                 options.Conventions.AuthorizePage("/Views/Roles/Index", "admin");
+                 options.Conventions.AuthorizePage("/Views/Users/Index", "admin");
+             })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+            // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {

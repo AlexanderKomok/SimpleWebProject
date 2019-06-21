@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -11,7 +14,12 @@
             <li>
                 <input type="submit" class="btn btn-link navbar-btn navbar-link" value="Выход" />
             </li>
-</ul>
+            <!--if ((await AuthorizationService.AuthorizeAsync(User, "admin")).Succeeded)
+    {
+        <li><a asp-area="" asp-controller="Roles" asp-action="Index">Edit users settings</a></li>
+        <li><a asp-area="" asp-controller="Users" asp-action="Index">Edit users settings</a></li>
+    }-->
+        </ul>
     </form>
 }
 else
@@ -29,7 +37,7 @@ else
         <li data-target="#myCarousel" data-slide-to="2"></li>
     </ol>
 
-    
+
 </div>
 
 
