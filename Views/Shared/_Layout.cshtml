@@ -35,13 +35,11 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <!--if ((await AuthorizationService.AuthorizeAsync(User, "admin")).Succeeded)
+                    @if (User.IsInRole("admin"))
                     {
                         <li><a asp-area="" asp-controller="Roles" asp-action="Index">Edit users settings</a></li>
                         <li><a asp-area="" asp-controller="Users" asp-action="Index">Edit users settings</a></li>
-                    }-->
-                    <li><a asp-area="" asp-controller="Roles" asp-action="Index">Edit roles</a></li>
-                    <li><a asp-area="" asp-controller="Users" asp-action="Index">Edit users settings</a></li>
+                    }                   
                 </ul>
                 </div>
             </div>

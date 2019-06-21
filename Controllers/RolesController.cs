@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using WebAppTry3.Models;
 using WebAppTry3.ViewModels;
 
+
 namespace WebAppTry3.Controllers
 {
     public class RolesController : Controller
@@ -19,7 +20,8 @@ namespace WebAppTry3.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
-        [Authorize(Policy = "admin")]
+
+        
         public IActionResult Index() => View(_roleManager.Roles.ToList());
 
         public IActionResult Create() => View();
