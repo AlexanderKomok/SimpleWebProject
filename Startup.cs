@@ -30,6 +30,8 @@ namespace WebAppTry3
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddRoles<IdentityRole>();
