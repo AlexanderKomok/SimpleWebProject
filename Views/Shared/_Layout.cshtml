@@ -37,9 +37,13 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     @if (User.IsInRole("admin"))
                     {
-                        <li><a asp-area="" asp-controller="Roles" asp-action="Index">Edit users settings</a></li>
+                        <li><a asp-area="" asp-controller="Roles" asp-action="Index">Edit roles settings</a></li>
                         <li><a asp-area="" asp-controller="Users" asp-action="Index">Edit users settings</a></li>
-                    }                   
+                    }
+                    @if (User.IsInRole("user"))
+                    {
+                        <li><a asp-area="" asp-controller="Album" asp-action="Index">Edit Album</a></li>
+                    }
                 </ul>
                 </div>
             </div>
