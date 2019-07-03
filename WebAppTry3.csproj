@@ -6,6 +6,12 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\Class.cs" />
+    <Compile Remove="Migrations\20190703120820_Migration5.cs" />
+    <Compile Remove="Migrations\20190703120820_Migration5.Designer.cs" />
+    <Compile Remove="Migrations\20190703121130_migrationtest.cs" />
+    <Compile Remove="Migrations\20190703121130_migrationtest.Designer.cs" />
+    <Compile Remove="Migrations\20190703121652_TestMigration.cs" />
+    <Compile Remove="Migrations\20190703121652_TestMigration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebAppTry3.DBEntities;
 using WebAppTry3.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebAppTry3.Controllers
 {
     public class AlbumController : Controller
     {
         private readonly ApplicationContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public AlbumController(ApplicationContext context)
+        public AlbumController(ApplicationContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Album
@@ -48,6 +48,7 @@ namespace WebAppTry3.Controllers
         // GET: Album/Create
         public IActionResult Create()
         {
+            
             return View();
         }
 
@@ -56,8 +57,9 @@ namespace WebAppTry3.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AlbumID,UserID,AlbumName,CurrentDBUserID")] Album album)
+        public async Task<IActionResult> Create([Bind("AlbumID,UserID,AlbumName")] Album album)
         {
+            var UserID = await _userManager.GetUserAsync(HttpContext.User);
             if (ModelState.IsValid)
             {
                 _context.Add(album);
@@ -90,7 +92,7 @@ namespace WebAppTry3.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AlbumID,UserID,AlbumName,CurrentDBUserID")] Album album)
+        public async Task<IActionResult> Edit(int id, [Bind("AlbumID,UserID,AlbumName")] Album album)
         {
             if (id != album.AlbumID)
             {

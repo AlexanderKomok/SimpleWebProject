@@ -140,15 +140,11 @@ namespace WebAppTry3.Migrations
                         .HasColumnName("Album")
                         .HasMaxLength(20);
 
-                    b.Property<int>("CurrentDBUserID");
-
-                    b.Property<int?>("DBUserID");
-
                     b.Property<int>("UserID");
 
                     b.HasKey("AlbumID");
 
-                    b.HasIndex("DBUserID");
+                    b.HasIndex("UserID");
 
                     b.ToTable("Albums");
                 });
@@ -168,15 +164,15 @@ namespace WebAppTry3.Migrations
 
             modelBuilder.Entity("WebAppTry3.DBEntities.DBUser", b =>
                 {
-                    b.Property<int>("DBUserID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("User Name");
 
-                    b.HasKey("DBUserID");
+                    b.HasKey("ID");
 
                     b.ToTable("DBUsers");
                 });
@@ -193,8 +189,6 @@ namespace WebAppTry3.Migrations
                         .IsRequired()
                         .HasColumnName("Band")
                         .HasMaxLength(20);
-
-                    b.Property<int>("CurrentDBUserID");
 
                     b.Property<int>("Grade")
                         .HasColumnName("Grade");
@@ -215,7 +209,7 @@ namespace WebAppTry3.Migrations
 
                     b.HasIndex("AlbumID");
 
-                    b.HasIndex("CurrentDBUserID");
+                    b.HasIndex("UserID");
 
                     b.ToTable("Tracks");
                 });
@@ -320,9 +314,10 @@ namespace WebAppTry3.Migrations
 
             modelBuilder.Entity("WebAppTry3.DBEntities.Album", b =>
                 {
-                    b.HasOne("WebAppTry3.DBEntities.DBUser", "DBUser")
+                    b.HasOne("WebAppTry3.DBEntities.DBUser", "User")
                         .WithMany("Albums")
-                        .HasForeignKey("DBUserID");
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("WebAppTry3.DBEntities.ConnectModel", b =>
@@ -330,7 +325,7 @@ namespace WebAppTry3.Migrations
                     b.HasOne("WebAppTry3.DBEntities.Album", "Album")
                         .WithMany("ConnectModels")
                         .HasForeignKey("AlbumID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebAppTry3.DBEntities.Track", "Track")
                         .WithMany("ConnectModels")
@@ -344,9 +339,9 @@ namespace WebAppTry3.Migrations
                         .WithMany("Tracks")
                         .HasForeignKey("AlbumID");
 
-                    b.HasOne("WebAppTry3.DBEntities.DBUser", "DBUser")
+                    b.HasOne("WebAppTry3.DBEntities.DBUser", "User")
                         .WithMany("Tracks")
-                        .HasForeignKey("CurrentDBUserID")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

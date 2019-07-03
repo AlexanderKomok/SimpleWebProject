@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebAppTry3.DBEntities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WebAppTry3.Models;
-using System.Data;
 
 namespace WebAppTry3.Models
 {
@@ -35,26 +28,26 @@ namespace WebAppTry3.Models
             modelBuilder.Entity<ConnectModel>()
                 .HasOne<Track>(cm => cm.Track)
                 .WithMany(t => t.ConnectModels)
-                .HasForeignKey(cm => cm.TrackID);
-                //.OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(cm => cm.TrackID)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
             modelBuilder.Entity<ConnectModel>()
                 .HasOne<Album>(cm => cm.Album)
                 .WithMany(t => t.ConnectModels)
-                .HasForeignKey(cm => cm.AlbumID);
-                //.OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(cm => cm.AlbumID)
+                .OnDelete(DeleteBehavior.Restrict);
 
             //Realization relationship one to many between User and Album in EF Core
             modelBuilder.Entity<Album>()
-                .HasOne<DBUser>(a => a.DBUser)
+                .HasOne<DBUser>(a => a.User)
                 .WithMany(dbu => dbu.Albums);
 
             //Realization relationship one to many between User and Track in EF Core
             modelBuilder.Entity<Track>()
-                .HasOne<DBUser>(t => t.DBUser)
+                .HasOne<DBUser>(t => t.User)
                 .WithMany(dbu => dbu.Tracks)
-                .HasForeignKey(t => t.CurrentDBUserID);
+                .HasForeignKey(t => t.UserID);
 
             //Stuffing Track in separate method
             modelBuilder.Entity<Track>()
@@ -71,7 +64,7 @@ namespace WebAppTry3.Models
                 .Property(a => a.AlbumName).HasColumnName("Album").HasMaxLength(20).IsRequired();
             //
             modelBuilder.Entity<DBUser>()
-               .Property(dbu => dbu.UserName).HasColumnName("User Name").IsRequired();
+               .Property(dbu => dbu.Name).HasColumnName("User Name").IsRequired();
             //Model Relationship
 
             //modelBuilder.ApplyConfiguration(new AlbumEntityConfiguration());

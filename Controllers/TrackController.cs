@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,7 +21,7 @@ namespace WebAppTry3.Controllers
         public async Task<IActionResult> Index()
         {
             //
-            var applicationContext = _context.Tracks.Include(t => t.DBUser);
+            var applicationContext = _context.Tracks.Include(t => t.User);
 
             return View(await applicationContext.ToListAsync());
         }
@@ -37,7 +35,7 @@ namespace WebAppTry3.Controllers
             }
 
             var track = await _context.Tracks
-                .Include(t => t.DBUser)
+                //.Include(t => t.DBUser)
                 .FirstOrDefaultAsync(m => m.TrackID == id);
             if (track == null)
             {
@@ -67,7 +65,7 @@ namespace WebAppTry3.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CurrentDBUserID"] = new SelectList(_context.DBUsers, "DBUserID", "UserName", track.CurrentDBUserID);
+            ViewData["UserID"] = new SelectList(_context.DBUsers, "DBUserID", "UserName", track.UserID);
             return View(track);
         }
 
@@ -84,7 +82,7 @@ namespace WebAppTry3.Controllers
             {
                 return NotFound();
             }
-            ViewData["CurrentDBUserID"] = new SelectList(_context.DBUsers, "DBUserID", "UserName", track.CurrentDBUserID);
+            ViewData["UserID"] = new SelectList(_context.DBUsers, "DBUserID", "UserName", track.UserID);
             return View(track);
         }
 
@@ -120,7 +118,7 @@ namespace WebAppTry3.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CurrentDBUserID"] = new SelectList(_context.DBUsers, "DBUserID", "UserName", track.CurrentDBUserID);
+            ViewData["CurrentDBUserID"] = new SelectList(_context.DBUsers, "DBUserID", "UserName", track.UserID);
             return View(track);
         }
 
@@ -133,7 +131,7 @@ namespace WebAppTry3.Controllers
             }
 
             var track = await _context.Tracks
-                .Include(t => t.DBUser)
+                //.Include(t => t.DBUser)
                 .FirstOrDefaultAsync(m => m.TrackID == id);
             if (track == null)
             {
