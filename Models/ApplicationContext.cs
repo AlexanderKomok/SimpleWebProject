@@ -16,7 +16,7 @@ namespace WebAppTry3.Models
         //
         public DbSet<Album> Albums {get; set;}
         public DbSet<Track> Tracks { get; set; }
-        public DbSet<DBUser> DBUsers { get; set; }
+        public DbSet<User> DBUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,16 +40,18 @@ namespace WebAppTry3.Models
 
             //Realization relationship one to many between User and Album in EF Core
             modelBuilder.Entity<Album>()
-                .HasOne<DBUser>(a => a.User)
+                .HasOne<User>(a => a.User)
                 .WithMany(dbu => dbu.Albums);
 
             //Realization relationship one to many between User and Track in EF Core
             modelBuilder.Entity<Track>()
-                .HasOne<DBUser>(t => t.User)
+                .HasOne<User>(t => t.User)
                 .WithMany(dbu => dbu.Tracks)
-                .HasForeignKey(t => t.UserID);
+                .HasForeignKey(t => t.UserId);
 
             //Stuffing Track in separate method
+            modelBuilder.Entity<Track>()
+                .Property(t => t.TrackID).ValueGeneratedOnAdd();
             modelBuilder.Entity<Track>()
                 .Property(t => t.ArtistName).HasColumnName("Band").HasMaxLength(20).IsRequired();
             modelBuilder.Entity<Track>()
@@ -59,12 +61,14 @@ namespace WebAppTry3.Models
             modelBuilder.Entity<Track>()
                 .Property(t => t.TrackUrl).HasColumnName("Link").HasMaxLength(250).IsRequired();
 
-            //
+            //Stuffing Album in separate method
+            modelBuilder.Entity<Album>()
+                .Property(a => a.AlbumID).ValueGeneratedOnAdd();
             modelBuilder.Entity<Album>()
                 .Property(a => a.AlbumName).HasColumnName("Album").HasMaxLength(20).IsRequired();
             //
-            modelBuilder.Entity<DBUser>()
-               .Property(dbu => dbu.Name).HasColumnName("User Name").IsRequired();
+            //modelBuilder.Entity<User>()
+               //.Property(dbu => dbu.Name).HasColumnName("User Name").IsRequired();
             //Model Relationship
 
             //modelBuilder.ApplyConfiguration(new AlbumEntityConfiguration());

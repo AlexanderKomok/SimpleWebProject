@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebAppTry3.Migrations
 {
-    public partial class TestMigration : Migration
+    public partial class NewMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,24 +41,13 @@ namespace WebAppTry3.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Year = table.Column<int>(nullable: false)
+                    Year = table.Column<int>(nullable: false),
+                    FullName = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DBUsers",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserName = table.Column<string>(name: "User Name", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DBUsers", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,6 +69,26 @@ namespace WebAppTry3.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Albums",
+                columns: table => new
+                {
+                    AlbumID = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    Album = table.Column<string>(maxLength: 20, nullable: false),
+                    UserId1 = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Albums", x => x.AlbumID);
+                    table.ForeignKey(
+                        name: "FK_Albums_AspNetUsers_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,37 +177,16 @@ namespace WebAppTry3.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Albums",
-                columns: table => new
-                {
-                    AlbumID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserID = table.Column<int>(nullable: false),
-                    Album = table.Column<string>(maxLength: 20, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Albums", x => x.AlbumID);
-                    table.ForeignKey(
-                        name: "FK_Albums_DBUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "DBUsers",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Tracks",
                 columns: table => new
                 {
-                    TrackID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserID = table.Column<int>(nullable: false),
+                    TrackID = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
                     Link = table.Column<string>(maxLength: 250, nullable: false),
                     Band = table.Column<string>(maxLength: 20, nullable: false),
                     Song = table.Column<string>(maxLength: 30, nullable: false),
                     Grade = table.Column<int>(nullable: false),
-                    AlbumID = table.Column<int>(nullable: true)
+                    AlbumID = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -210,19 +198,19 @@ namespace WebAppTry3.Migrations
                         principalColumn: "AlbumID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Tracks_DBUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "DBUsers",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_Tracks_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "ConnectModel",
                 columns: table => new
                 {
-                    AlbumID = table.Column<int>(nullable: false),
-                    TrackID = table.Column<int>(nullable: false)
+                    AlbumID = table.Column<Guid>(nullable: false),
+                    TrackID = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -242,9 +230,9 @@ namespace WebAppTry3.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Albums_UserID",
+                name: "IX_Albums_UserId1",
                 table: "Albums",
-                column: "UserID");
+                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -296,9 +284,9 @@ namespace WebAppTry3.Migrations
                 column: "AlbumID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tracks_UserID",
+                name: "IX_Tracks_UserId",
                 table: "Tracks",
-                column: "UserID");
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -325,16 +313,13 @@ namespace WebAppTry3.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Tracks");
 
             migrationBuilder.DropTable(
                 name: "Albums");
 
             migrationBuilder.DropTable(
-                name: "DBUsers");
+                name: "AspNetUsers");
         }
     }
 }

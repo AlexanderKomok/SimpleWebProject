@@ -35,14 +35,15 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    @if (User.IsInRole("admin"))
+                    
                     {
                         <li><a asp-area="" asp-controller="Roles" asp-action="Index">Edit roles settings</a></li>
                         <li><a asp-area="" asp-controller="Users" asp-action="Index">Edit users settings</a></li>
                     }
-                    @if (User.IsInRole("user"))
+                    
                     {
                         <li><a asp-area="" asp-controller="Album" asp-action="Index">Edit Album</a></li>
+                        <li><a asp-area="" asp-controller="Track" asp-action="Index">Edit Tracks</a></li>
                     }
                 </ul>
                 </div>

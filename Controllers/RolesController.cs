@@ -70,6 +70,7 @@ namespace WebAppTry3.Controllers
                 {
                     UserId = userId,
                     UserEmail = user.Email,
+                    FullName = user.FullName,
                     UserRoles = userRoles,
                     AllRoles = allRoles
                 };

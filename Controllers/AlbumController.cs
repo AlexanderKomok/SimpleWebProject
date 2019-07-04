@@ -1,33 +1,32 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebAppTry3.DBEntities;
 using WebAppTry3.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace WebAppTry3.Controllers
 {
     public class AlbumController : Controller
     {
         private readonly ApplicationContext _context;
-        private readonly UserManager<User> _userManager;
 
-        public AlbumController(ApplicationContext context, UserManager<User> userManager)
+        public AlbumController(ApplicationContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         // GET: Album
         public async Task<IActionResult> Index()
         {
-            var applicationContext = _context.Albums.Include(t => t.Tracks);
             return View(await _context.Albums.ToListAsync());
         }
 
         // GET: Album/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
             {
@@ -36,7 +35,6 @@ namespace WebAppTry3.Controllers
 
             var album = await _context.Albums
                 .FirstOrDefaultAsync(m => m.AlbumID == id);
-                
             if (album == null)
             {
                 return NotFound();
@@ -48,7 +46,6 @@ namespace WebAppTry3.Controllers
         // GET: Album/Create
         public IActionResult Create()
         {
-            
             return View();
         }
 
@@ -57,11 +54,11 @@ namespace WebAppTry3.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AlbumID,UserID,AlbumName")] Album album)
+        public async Task<IActionResult> Create([Bind("AlbumID,UserId,AlbumName")] Album album)
         {
-            var UserID = await _userManager.GetUserAsync(HttpContext.User);
             if (ModelState.IsValid)
             {
+                album.AlbumID = Guid.NewGuid();
                 _context.Add(album);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -69,10 +66,8 @@ namespace WebAppTry3.Controllers
             return View(album);
         }
 
-        //GET: Track
-
         // GET: Album/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
@@ -92,7 +87,7 @@ namespace WebAppTry3.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AlbumID,UserID,AlbumName")] Album album)
+        public async Task<IActionResult> Edit(Guid id, [Bind("AlbumID,UserId,AlbumName")] Album album)
         {
             if (id != album.AlbumID)
             {
@@ -123,7 +118,7 @@ namespace WebAppTry3.Controllers
         }
 
         // GET: Album/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
@@ -143,7 +138,7 @@ namespace WebAppTry3.Controllers
         // POST: Album/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var album = await _context.Albums.FindAsync(id);
             _context.Albums.Remove(album);
@@ -151,7 +146,7 @@ namespace WebAppTry3.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AlbumExists(int id)
+        private bool AlbumExists(Guid id)
         {
             return _context.Albums.Any(e => e.AlbumID == id);
         }

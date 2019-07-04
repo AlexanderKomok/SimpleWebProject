@@ -6,11 +6,13 @@
 <a asp-action="Create">Добавить пользователя</a>
 
 <table class="table">
-    <tr><th>Email</th><th>Год</th><th></th></tr>
+    <tr><th>Email</th><th>Ник</th><th>Полное имя</th><th>Год рождения</th><th></th></tr>
     @foreach (var user in Model)
     {
         <tr>
             <td>@user.Email</td>
+            <td>@user.UserName</td>
+            <td>@user.FullName</td>
             <td>@user.Year</td>
             <td>
                 <form asp-action="Delete" asp-route-id="@user.Id" method="post">

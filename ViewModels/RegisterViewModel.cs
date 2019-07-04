@@ -13,6 +13,14 @@ namespace WebAppTry3.ViewModels
         public string Email { get; set; }
 
         [Required]
+        [Display(Name = "UserName")]
+        public string UserName { get; set; }
+
+        [Required]
+        [Display(Name = "FullName")]
+        public string FullName { get; set; }
+
+        [Required]
         [Display(Name = "Год рождения")]
         public int Year { get; set; }
 

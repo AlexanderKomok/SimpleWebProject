@@ -131,29 +131,30 @@ namespace WebAppTry3.Migrations
 
             modelBuilder.Entity("WebAppTry3.DBEntities.Album", b =>
                 {
-                    b.Property<int>("AlbumID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<Guid>("AlbumID")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("AlbumName")
                         .IsRequired()
                         .HasColumnName("Album")
                         .HasMaxLength(20);
 
-                    b.Property<int>("UserID");
+                    b.Property<Guid>("UserId");
+
+                    b.Property<string>("UserId1");
 
                     b.HasKey("AlbumID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Albums");
                 });
 
             modelBuilder.Entity("WebAppTry3.DBEntities.ConnectModel", b =>
                 {
-                    b.Property<int>("TrackID");
+                    b.Property<Guid>("TrackID");
 
-                    b.Property<int>("AlbumID");
+                    b.Property<Guid>("AlbumID");
 
                     b.HasKey("TrackID", "AlbumID");
 
@@ -162,28 +163,12 @@ namespace WebAppTry3.Migrations
                     b.ToTable("ConnectModel");
                 });
 
-            modelBuilder.Entity("WebAppTry3.DBEntities.DBUser", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnName("User Name");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("DBUsers");
-                });
-
             modelBuilder.Entity("WebAppTry3.DBEntities.Track", b =>
                 {
-                    b.Property<int>("TrackID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<Guid>("TrackID")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("AlbumID");
+                    b.Property<Guid?>("AlbumID");
 
                     b.Property<string>("ArtistName")
                         .IsRequired()
@@ -203,13 +188,13 @@ namespace WebAppTry3.Migrations
                         .HasColumnName("Link")
                         .HasMaxLength(250);
 
-                    b.Property<int>("UserID");
+                    b.Property<string>("UserId");
 
                     b.HasKey("TrackID");
 
                     b.HasIndex("AlbumID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Tracks");
                 });
@@ -229,9 +214,13 @@ namespace WebAppTry3.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<string>("FullName");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("Name");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -314,10 +303,9 @@ namespace WebAppTry3.Migrations
 
             modelBuilder.Entity("WebAppTry3.DBEntities.Album", b =>
                 {
-                    b.HasOne("WebAppTry3.DBEntities.DBUser", "User")
+                    b.HasOne("WebAppTry3.Models.User", "User")
                         .WithMany("Albums")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("WebAppTry3.DBEntities.ConnectModel", b =>
@@ -339,10 +327,9 @@ namespace WebAppTry3.Migrations
                         .WithMany("Tracks")
                         .HasForeignKey("AlbumID");
 
-                    b.HasOne("WebAppTry3.DBEntities.DBUser", "User")
+                    b.HasOne("WebAppTry3.Models.User", "User")
                         .WithMany("Tracks")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

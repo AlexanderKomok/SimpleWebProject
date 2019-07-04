@@ -27,7 +27,7 @@ namespace WebAppTry3.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User { Email = model.Email, UserName = model.Email, Year = model.Year };
+                User user = new User { Email = model.Email, UserName = model.UserName, FullName = model.FullName, Year = model.Year };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -51,7 +51,7 @@ namespace WebAppTry3.Controllers
             {
                 return NotFound();
             }
-            EditUserViewModel model = new EditUserViewModel { Id = user.Id, Email = user.Email, Year = user.Year };
+            EditUserViewModel model = new EditUserViewModel { Id = user.Id, Email = user.Email, FullName = user.FullName, UserName = user.UserName, Year = user.Year };
             return View(model);
         }
 
@@ -64,7 +64,8 @@ namespace WebAppTry3.Controllers
                 if (user != null)
                 {
                     user.Email = model.Email;
-                    user.UserName = model.Email;
+                    user.UserName = model.UserName;
+                    user.FullName = model.FullName;
                     user.Year = model.Year;
 
                     var result = await _userManager.UpdateAsync(user);
