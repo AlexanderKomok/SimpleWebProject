@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using WebAppTry3.DBEntities;
 
 namespace WebAppTry3.Models
@@ -60,6 +61,8 @@ namespace WebAppTry3.Models
                 .Property(t => t.Grade).HasColumnName("Grade").IsRequired();
             modelBuilder.Entity<Track>()
                 .Property(t => t.TrackUrl).HasColumnName("Link").HasMaxLength(250).IsRequired();
+            //modelBuilder.Entity<Track>()
+                //.Property(t => t.UserName).HasColumnName("UserName").HasMaxLength(250);
 
             //Stuffing Album in separate method
             modelBuilder.Entity<Album>()
@@ -68,12 +71,12 @@ namespace WebAppTry3.Models
                 .Property(a => a.AlbumName).HasColumnName("Album").HasMaxLength(20).IsRequired();
             //
             //modelBuilder.Entity<User>()
-               //.Property(dbu => dbu.Name).HasColumnName("User Name").IsRequired();
+            //.Property(dbu => dbu.Name).HasColumnName("User Name").IsRequired();
             //Model Relationship
 
             //modelBuilder.ApplyConfiguration(new AlbumEntityConfiguration());
             //modelBuilder.ApplyConfiguration(new TrackEntityConfiguration());
-            //modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+            //modelBuilder.ApplyConfiguration(new UserEntityConfiguration());            
             base.OnModelCreating(modelBuilder);
         }
     }
