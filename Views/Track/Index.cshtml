@@ -23,6 +23,9 @@
             <th>
                 Track Url
             </th>
+            @*<th>
+                Album Name
+            </th>*@
             <th>
                 Artist Name
             </th>
@@ -41,28 +44,31 @@
     <tbody>
         @foreach (var item in tracks)
         {
-            <tr>
-                <td>
-                    @item.TrackUrl
-                </td>
-                <td>
-                    @item.ArtistName
-                </td>
-                <td>
-                    @item.TrackName
-                </td>
-                <td>
-                    @item.Grade
-                </td>
-                <td>
-                    @item.User?.FullName
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.TrackID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.TrackID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.TrackID">Delete</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @item.TrackUrl
+            </td>
+            @*<td>
+                @item.AlbumName
+            </td>*@
+            <td>
+                @item.ArtistName
+            </td>
+            <td>
+                @item.TrackName
+            </td>
+            <td>
+                @item.Grade
+            </td>
+            <td>
+                @item.User?.FullName
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TrackID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TrackID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TrackID">Delete</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

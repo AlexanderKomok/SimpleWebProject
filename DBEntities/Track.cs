@@ -14,6 +14,7 @@ namespace WebAppTry3.DBEntities
         [Key]
         public Guid TrackID { get; set; }
         public string UserId { get; set; }
+        public string AlbumName { get; set; }
         public string TrackUrl { get; set; }
         public string ArtistName { get; set; }
         public string TrackName { get; set; }

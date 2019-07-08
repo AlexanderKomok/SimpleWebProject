@@ -65,7 +65,8 @@ namespace WebAppTry3.Controllers
         // GET: Track/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "UserName");
+            ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", "AlbumName");
             return View();
         }
 
@@ -74,7 +75,7 @@ namespace WebAppTry3.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TrackID,UserId,TrackUrl,ArtistName,TrackName,Grade")] Track track)
+        public async Task<IActionResult> Create([Bind("TrackID,AlbumName,UserId,TrackUrl,ArtistName,TrackName,Grade")] Track track)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +84,8 @@ namespace WebAppTry3.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "Id", track.UserId);
+            ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "userName", track.UserId);
+            ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", "AlbumName", track.AlbumName);
             return View(track);
         }
 
@@ -100,7 +102,8 @@ namespace WebAppTry3.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "Id", track.UserId);
+            ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "userName", track.UserId);
+            ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", "AlbumName", track.AlbumName);
             return View(track);
         }
 
@@ -109,7 +112,7 @@ namespace WebAppTry3.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("TrackID,UserId,TrackUrl,ArtistName,TrackName,Grade")] Track track)
+        public async Task<IActionResult> Edit(Guid id, [Bind("TrackID,UserId,AlbumName,TrackUrl,ArtistName,TrackName,Grade")] Track track)
         {
             if (id != track.TrackID)
             {
@@ -137,6 +140,7 @@ namespace WebAppTry3.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "Id", track.UserId);
+            ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", "AlbumName", track.AlbumName);
             return View(track);
         }
 
