@@ -1,0 +1,113 @@
+﻿@model WebAppTry3.Controllers.SomeModel
+
+@{
+    ViewData["Title"] = "Player";
+}
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+    <h2>YouTube Player</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <iframe width="560" height="315"
+                        src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <form>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="url" class="form-control" placeholder="Insert your url" />
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+
+            </form>
+            <div class="container">
+                <div class="col-md-4">
+                    <b>Now Playing</b>
+                    <div class="list-item" id="playing">
+                        <div class="item">
+                            <div class="name"><span>Some Song name</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <b>List to play</b>
+                    <div class="list-item" id="list-to-play">
+                        <div class="item">
+                            <div class="name"><span>Some Song name</span></div>
+                        </div>
+                        <div class="item">
+                            <div class="name"><span>Some Song name</span></div>
+                        </div>
+                        <div class="item">
+                            <div class="name"><span>Some Song name</span></div>
+                        </div>
+                        <div class="item">
+                            <div class="name"><span>Some Song name</span></div>
+                        </div>
+                        <div class="item">
+                            <div class="name"><span>Some Song name</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <b>History</b>
+                    <div class="list-item" id="history">
+                        <div class="item">
+                            <div class="name"><span>Some Song name</span></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<style>
+    .list-item {
+        background-color: #ddd;
+        padding: 2px;
+    }
+
+        .list-item .item {
+            background-color: #efefef;
+            padding: 5px 20px;
+            margin: 2px;
+        }
+
+            .list-item[id='playing'] {
+                background-color: #80e080;
+            }
+
+                .list-item[id='playing'] .item {
+                    background-color: #afffaf;
+                }
+
+                .list-item[id='playing'] .item:hover {
+                    background-color: #80f080;
+                }
+
+                .list-item[id='playing'] .item:active {
+                    background-color: #80d080;
+                }
+
+        .list-item .item:hover {
+            background-color: #e0e0e0;
+        }
+        .list-item .item:active{
+            background-color: #dadada;
+        }
+
+
+</style>
