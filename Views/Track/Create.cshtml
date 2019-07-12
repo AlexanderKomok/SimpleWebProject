@@ -12,13 +12,18 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        @*asp-action - indication of controller action*@
+        <form asp-action="Create">           
+            @*asp-validation-summary="ModelOnly" - display of validation errors at the model level*@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
+                <label asp-for="User" class="control-label"></label>
+                @*select asp-for="UserId" create list item for UserId*@
                 <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
                 <span asp-validation-for="User.Id" class="text-danger"></span>
             </div>
+            @*@ViewData["Message"];*@
+
             <div class="form-group">
                 <label asp-for="AlbumName" class="control-label"></label>
                 <select asp-for="AlbumName" class="form-control" asp-items="ViewBag.AlbumName"></select>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,7 +42,7 @@ namespace WebAppTry3.Controllers
             return View(result);
         }
 
-        
+
 
         // GET: Track/Details/5
         public async Task<IActionResult> Details(Guid? id)
@@ -70,6 +71,13 @@ namespace WebAppTry3.Controllers
             return View();
         }
 
+        //public IActionResult CreateFromPlayer()
+        //{
+        //    ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "UserName");
+        //    ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", "AlbumName");
+        //    return View();
+        //}
+
         // POST: Track/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -89,6 +97,19 @@ namespace WebAppTry3.Controllers
             return View(track);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateFromPlayer(Track track)
+        {
+            if (ModelState.IsValid)
+            {
+                track.TrackID = Guid.NewGuid();
+                _context.Add(track);
+                await _context.SaveChangesAsync();
+            }
+            //ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "userName", track.UserId);
+            //ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", "AlbumName", track.AlbumName);
+            return RedirectToAction("Index", "Player");
+        }
         // GET: Track/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
@@ -141,6 +162,7 @@ namespace WebAppTry3.Controllers
             }
             ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "Id", track.UserId);
             ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", "AlbumName", track.AlbumName);
+
             return View(track);
         }
 

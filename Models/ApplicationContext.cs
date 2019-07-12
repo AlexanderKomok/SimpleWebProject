@@ -54,11 +54,11 @@ namespace WebAppTry3.Models
             modelBuilder.Entity<Track>()
                 .Property(t => t.TrackID).ValueGeneratedOnAdd();
             modelBuilder.Entity<Track>()
-                .Property(t => t.ArtistName).HasColumnName("Band").HasMaxLength(20).IsRequired();
+                .Property(t => t.ArtistName).HasColumnName("Band").HasMaxLength(20);
             modelBuilder.Entity<Track>()
-                .Property(t => t.TrackName).HasColumnName("Song").HasMaxLength(30).IsRequired();
+                .Property(t => t.TrackName).HasColumnName("Song").HasMaxLength(30);
             modelBuilder.Entity<Track>()
-                .Property(t => t.Grade).HasColumnName("Grade").IsRequired();
+                .Property(t => t.Grade).HasColumnName("Grade");
             modelBuilder.Entity<Track>()
                 .Property(t => t.TrackUrl).HasColumnName("Link").HasMaxLength(250).IsRequired();
             //modelBuilder.Entity<Track>()

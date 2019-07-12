@@ -1,4 +1,6 @@
-﻿@model WebAppTry3.Controllers.SomeModel
+﻿@model WebAppTry3.DBEntities.Track
+
+@using WebAppTry3.Controllers
 
 @{
     ViewData["Title"] = "Player";
@@ -17,17 +19,15 @@
                         src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0"
                         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-
-            <form>
+            <form asp-action="CreateFromPlayer" asp-controller="Track">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <input type="url" class="form-control" placeholder="Insert your url" />
+                        <input type="url" asp-for="TrackUrl" class="form-control" placeholder="Insert your url" />
                     </div>
                 </div>
                 <div class="col-md-1">
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" value="Save" class="btn btn-primary">Add</button>
                 </div>
-
             </form>
             <div class="container">
                 <div class="col-md-4">

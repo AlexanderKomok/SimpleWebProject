@@ -42,8 +42,7 @@ namespace WebAppTry3.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     Year = table.Column<int>(nullable: false),
-                    FullName = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
+                    FullName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -182,10 +181,11 @@ namespace WebAppTry3.Migrations
                 {
                     TrackID = table.Column<Guid>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
+                    AlbumName = table.Column<string>(nullable: true),
                     Link = table.Column<string>(maxLength: 250, nullable: false),
-                    Band = table.Column<string>(maxLength: 20, nullable: false),
-                    Song = table.Column<string>(maxLength: 30, nullable: false),
-                    Grade = table.Column<int>(nullable: false),
+                    Band = table.Column<string>(maxLength: 20, nullable: true),
+                    Song = table.Column<string>(maxLength: 30, nullable: true),
+                    Grade = table.Column<int>(nullable: true),
                     AlbumID = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
