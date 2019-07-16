@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -70,13 +69,6 @@ namespace WebAppTry3.Controllers
             ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", "AlbumName");
             return View();
         }
-
-        //public IActionResult CreateFromPlayer()
-        //{
-        //    ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "UserName");
-        //    ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", "AlbumName");
-        //    return View();
-        //}
 
         // POST: Track/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
