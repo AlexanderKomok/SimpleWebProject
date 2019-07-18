@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace WebAppTry3.Controllers
         public IEnumerable<Track> Tracks { get; set; }
         public IEnumerable<Album> Albums { get; set; }
     }
-
+    [Authorize]
     public class TrackController : Controller
     {
         private readonly ApplicationContext _context;
@@ -66,7 +67,8 @@ namespace WebAppTry3.Controllers
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "UserName");
-            ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", "AlbumName");
+            //ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", "AlbumName");
+            ViewData["AlbumName"] = new SelectList(_context.Albums, "UserId", "AlbumName");
             return View();
         }
 
@@ -80,28 +82,24 @@ namespace WebAppTry3.Controllers
             if (ModelState.IsValid)
             {
                 track.TrackID = Guid.NewGuid();
+                //var UserIDVar = _context.DBUsers.FirstOrDefault(userItem => userItem.Id == track.UserId);                               
+                //track.UserId = UserIDVar.Id;
                 _context.Add(track);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "userName", track.UserId);
-            ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", "AlbumName", track.AlbumName);
+            //var UserIDVar = _context.DBUsers.FirstOrDefault(userItem => userItem.Id == track.UserId);
+            //string UserId = Convert.ToString(UserIDVar);
+            //track.UserId = UserId;
+            //ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "userName", track.UserId);
+            //track.UserId = _context.DBUsers.Include(uid => uid.Id);
+            //ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", "AlbumName", track.AlbumName);
+            //ViewData["AlbumName"] = new SelectList(_context.Albums, "UserId", "AlbumName", track.UserId, track.AlbumName);
+            //string UserId = Request.Query.FirstOrDefault(p => p.Key == "Id").Value;
+            //track.UserId = UserId;
             return View(track);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateFromPlayer(Track track)
-        {
-            if (ModelState.IsValid)
-            {
-                track.TrackID = Guid.NewGuid();
-                _context.Add(track);
-                await _context.SaveChangesAsync();
-            }
-            //ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "userName", track.UserId);
-            //ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", "AlbumName", track.AlbumName);
-            return RedirectToAction("Index", "Player");
-        }
         // GET: Track/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {

@@ -3,6 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using WebAppTry3.Models;
 using WebAppTry3.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
+using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
+using System.Security.Claims;
 
 namespace WebAppTry3.Controllers
 {
@@ -15,6 +20,15 @@ namespace WebAppTry3.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
+        }
+        private async Task Auth(User user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email)
+            };
+            ClaimsIdentity id = new ClaimsIdentity();
+
         }
         [HttpGet]
         public IActionResult Register()
@@ -30,28 +44,16 @@ namespace WebAppTry3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+
+
             if (ModelState.IsValid)
             {
-                var result =
-                    await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-                if (result.Succeeded)
-                {
-                    // проверяем, принадлежит ли URL приложению
-                    if(!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
-                    {
-                        return Redirect(model.ReturnUrl);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Неправильный логин и (или) пароль");
-                }
+                var u = await _userManager.FindByEmailAsync(model.Email);
+                var r = await _signInManager.CheckPasswordSignInAsync(u, model.Password, false);
+                await _signInManager.SignInAsync(u, true);
+               
             }
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             return View(model);
         }
         [HttpPost]
@@ -87,5 +89,7 @@ namespace WebAppTry3.Controllers
 
             return View(model);
         }
+
+        
     }
 }

@@ -1,6 +1,7 @@
 ﻿@model WebAppTry3.ViewModels.LoginViewModel
-
-<h2>Вход в приложение</h2>
+@ViewData["Message1"]
+@ViewData["Message2"]
+<h2>Please login</h2>
 <form method="post" asp-controller="Account" asp-action="Login"
       asp-route-returnUrl="@Model.ReturnUrl">
     <div asp-validation-summary="ModelOnly"></div>

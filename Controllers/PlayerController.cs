@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using WebAppTry3.DBEntities;
 using WebAppTry3.Models;
 
 namespace WebAppTry3.Controllers
 {
+    
+    [Authorize]
     public class PlayerController : Controller
     {
         private readonly ApplicationContext _context;
@@ -19,6 +19,12 @@ namespace WebAppTry3.Controllers
         }
         public IActionResult Index()
         {
+            bool IsAdmin = HttpContext.User.IsInRole("admin");
+
+            if (IsAdmin == true)
+            {
+                ViewData["SomeMessage"] = "My congratulations you are admin";
+            }
             var Tracklist = _context.Tracks.ToList();
             //var Albumlist = _context.Tracks.ToList();
             //ViewData["TrackUrl"] = list;
@@ -29,21 +35,20 @@ namespace WebAppTry3.Controllers
         //GET
         public IActionResult CreateFromPlayer()
         {
-            ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID");
             return View();
         }
 
         //POST
         [HttpPost]
-        public async Task<IActionResult> CreateFromPlayer(Track track)
+        public async Task<IActionResult> CreateFromPlayer(string url)
         {
             if (ModelState.IsValid)
             {
-                track.TrackID = Guid.NewGuid();
-                _context.Add(track);
+                _context.Tracks.Add(new Track { TrackID = Guid.NewGuid(), AlbumName = "", TrackUrl = url });
+                //track.TrackID = Guid.NewGuid();
+                //_context.Add(track);
                 await _context.SaveChangesAsync();
             }
-            ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", track.AlbumName);
             return RedirectToAction("Index", "Player");
         }
 

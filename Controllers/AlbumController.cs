@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Web;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebAppTry3.DBEntities;
 using WebAppTry3.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebAppTry3.Controllers
 {
+    //[Authorize]
     public class AlbumController : Controller
     {
         private readonly ApplicationContext _context;
@@ -47,19 +49,30 @@ namespace WebAppTry3.Controllers
         // GET: Album/Create
         public IActionResult Create()
         {
+            
             return View();
         }
 
         // POST: Album/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AlbumID,UserId,AlbumName")] Album album)
+        public async Task<IActionResult> Create(Album album)
         {
+            
             if (ModelState.IsValid)
             {
                 album.AlbumID = Guid.NewGuid();
+                //var UserIdVar = _context.DBUsers.Include(uid => uid.Id);
+                //Guid UserId = Guid.Parse(UserIdVar);
+                //string UserIdString = Request.Query.FirstOrDefault(p => p.Key == "Id").Value;               
+                //Guid UserId = Guid.Parse(UserIdString);
+                //album.UserId = UserId;
+                //album.UserId = HttpContext.User.Identity.
+                //var SomeEntity = _context.DBUsers.FirstOrDefault(p =>p.);
+
                 _context.Add(album);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

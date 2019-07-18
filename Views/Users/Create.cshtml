@@ -1,6 +1,6 @@
 ﻿@model WebAppTry3.ViewModels.CreateUserViewModel
 @{
-    ViewBag.Title = "Добавление пользователей";
+    ViewBag.Title = "Add users";
 }
     <form asp-action="Create" asp-controller="Users">
         <div asp-validation-summary="All" class="text-danger"></div>
@@ -25,6 +25,6 @@
             <input type="text" asp-for="Year" class="form-control" />
         </div>
         <div class="form-group">
-            <input type="submit" value="Добавить" class="btn btn-default" />
+            <input type="submit" value="Add" class="btn btn-default" />
         </div>
     </form>

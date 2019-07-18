@@ -14,10 +14,10 @@ namespace WebAppTry3.ViewModels
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Пароль")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
         
-        [Display(Name = "Запомнить?")]
+        [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
 
         public string ReturnUrl { get; set; }

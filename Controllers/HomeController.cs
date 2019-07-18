@@ -20,7 +20,7 @@ namespace WebAppTry3.Controllers
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Contact page";
 
             return View();
         }

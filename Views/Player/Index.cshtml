@@ -1,54 +1,63 @@
 ﻿@model List<WebAppTry3.DBEntities.Track>
-
 @*@using WebAppTry3.Controllers
 
-@model SomeModel*@
+    @model SomeModel*@
 
 @{
     ViewData["Title"] = "Player";
 }
-
+@ViewData["SomeMessage"]
 @*@{
     var tracks = Model.Tracks;
     var albums = Model.Albums;
-}*@
+    }*@
 
 <!DOCTYPE html>
 <html>
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" language="javascript">
-        $('TestButtonForAjax'.click(function () {
-            $.ajax({
-                type: "POST",
-                url: "",
-                data: '',
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: OnSuccess,
-            })
-        })
-    </script>
 </head>
 <body>
     <h2>YouTube Player</h2>
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <iframe width="560" height="315"                        
+                <iframe width="560" height="315"
                         src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0"
                         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-            <form asp-action="CreateFromPlayer" asp-controller="Player">
-                <div class="col-md-5">
+            @*<div class="col-md-5">
                     <div class="form-group">
                         <input type="url" name="TrackUrl" class="form-control" placeholder="Insert your url" />
                     </div>
+                </div>*@
+            <div class="col-md-5">
+                <div class="form-group">
+                    <input type="url" id="TestUrlForAjax" class="form-control" placeholder="Insert your url" />
                 </div>
-                <div class="col-md-1">
-                    <button id="TestButtonForAjax" type="submit" value="Save" class="btn btn-primary">Add</button>
-                </div>
-            </form>
+            </div>
+            <div class="col-md-1">
+                <button id="TestButtonForAjax" type="submit" value="Save" class="btn btn-primary">Add</button>
+            </div>
+            @*Try to add data with Ajax*@
+            <script type="text/javascript" language="javascript">
+
+                $('#TestButtonForAjax').on('click', function () {
+
+                    var url = $("#TestUrlForAjax").val();
+                    debugger;
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "Player/CreateFromPlayer",
+                        data: { url: url },
+                        success: function () {
+
+                        }
+                    })
+                })
+            </script>
             <div class="container">
                 <div class="col-md-5">
                     <b>Now Playing</b>
@@ -63,7 +72,7 @@
                                 </div>
                             }
                         }
-                        </div>
+                    </div>
                 </div>
                 <div class="col-md-5">
                     <b>List to play</b>
@@ -79,7 +88,7 @@
                                     </div>
                                 }
                             }
-                        </div>                      
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-5">
@@ -143,3 +152,4 @@
             background-color: #dadada;
         }
 </style>
+

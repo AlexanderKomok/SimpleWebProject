@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using WebAppTry3.Models;
 using WebAppTry3.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAppTry3.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         UserManager<User> _userManager;
