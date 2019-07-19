@@ -1,74 +1,67 @@
-﻿@model WebAppTry3.Controllers.SomeModel
+﻿@model  IEnumerable<WebAppTry3.DBEntities.Track>
 
+    @{
+        ViewData["Title"] = "Index";
+    }
 
+    <h2>Edit Tracks</h2>
 
-
-@{
-    ViewData["Title"] = "Index";
-
-}
-
-<h2>Edit Tracks</h2>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-@{
-    var tracks = Model.Tracks;
-    var albums = Model.Albums;
-}
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Track Url
-            </th>
-            @*<th>
-                Album Name
-            </th>*@
-            <th>
-                Artist Name
-            </th>
-            <th>
-                Track Name
-            </th>
-            <th>
-                Grade
-            </th>
-            <th>
-                User Name
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in tracks)
-        {
-        <tr>
-            <td>
-                @item.TrackUrl
-            </td>
-            @*<td>
-                @item.AlbumName
-            </td>*@
-            <td>
-                @item.ArtistName
-            </td>
-            <td>
-                @item.TrackName
-            </td>
-            <td>
-                @item.Grade
-            </td>
-            <td>
-                @item.User?.FullName
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TrackID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TrackID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TrackID">Delete</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Track Url
+                </th>
+                <th>
+                    Album Name
+                </th>
+                <th>
+                    Artist Name
+                </th>
+                <th>
+                    Track Name
+                </th>
+                <th>
+                    Grade
+                </th>
+                <th>
+                    User Name
+                </th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @item.TrackUrl
+                </td>
+                <td>
+                    @item.Album
+                </td>
+                <td>
+                    @item.ArtistName
+                </td>
+                <td>
+                    @item.TrackName
+                </td>
+                <td>
+                    @item.Grade
+                </td>
+                <td>
+                    @item.User?.FullName
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TrackID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.TrackID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.TrackID">Delete</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>

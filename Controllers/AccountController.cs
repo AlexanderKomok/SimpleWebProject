@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Security.Claims;
+using Microsoft.Extensions.Options;
 
 namespace WebAppTry3.Controllers
 {
@@ -21,23 +22,17 @@ namespace WebAppTry3.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
-        private async Task Auth(User user)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email)
-            };
-            ClaimsIdentity id = new ClaimsIdentity();
-
-        }
+        
         [HttpGet]
         public IActionResult Register()
         {
+
             return View();
         }
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
+
             return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
         [HttpPost]
@@ -48,10 +43,15 @@ namespace WebAppTry3.Controllers
 
             if (ModelState.IsValid)
             {
+
                 var u = await _userManager.FindByEmailAsync(model.Email);
                 var r = await _signInManager.CheckPasswordSignInAsync(u, model.Password, false);
                 await _signInManager.SignInAsync(u, true);
-               
+                //await _userManager.AddClaimAsync(u, new Claim("Email", model.Email ));
+                //var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(u);
+                //await _signInManager.RefreshSignInAsync(user);
+                //await _signInManager.RefreshSignInAsync(u);
+
             }
             var errors = ModelState.Values.SelectMany(v => v.Errors);
             return View(model);

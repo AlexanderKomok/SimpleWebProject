@@ -1,23 +1,20 @@
 ﻿@model List<WebAppTry3.DBEntities.Track>
-@*@using WebAppTry3.Controllers
-
-    @model SomeModel*@
 
 @{
     ViewData["Title"] = "Player";
 }
 @ViewData["SomeMessage"]
-@*@{
-    var tracks = Model.Tracks;
-    var albums = Model.Albums;
-    }*@
 
+    
+    <a>@User.FindFirst("UserName").Value</a>
+    <a>@ViewData["EmailMessege"]</a>
 <!DOCTYPE html>
 <html>
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
+    
     <h2>YouTube Player</h2>
     <div class="container">
         <div class="row">
@@ -65,12 +62,12 @@
                         @foreach (var song in Model)
                         {
                             @*Output play*@
-                            if (song.AlbumName == "de3806c6-a386-4e7e-8d72-7fff891613a3")
-                            {
+                            //if (song.Album == 0)
+                            
                                 <div class="item">
                                     <div class="name"><span>@song.TrackUrl</span></div>
                                 </div>
-                            }
+                            
                         }
                     </div>
                 </div>
@@ -81,12 +78,12 @@
                             @foreach (var song in Model)
                             {
                                 @*Output list to play*@
-                                if (song.AlbumName == "fce69766-5c07-48aa-9291-4642283110c4")
-                                {
+                                //if (song.Album == 1)
+                                
                                     <div class="item">
                                         <div class="name"><span>@song.TrackUrl</span></div>
                                     </div>
-                                }
+                                
                             }
                         </div>
                     </div>
@@ -98,12 +95,12 @@
                             @*Output history playlist*@
                             @foreach (var song in Model)
                             {
-                                if (song.AlbumName == "fc48bb47-169b-43c4-9fda-586f2454ffbd")
-                                {
+                                //if (song.AlbumName == 2)
+                                
                                     <div class="item">
                                         <div class="name"><span>@song.TrackUrl</span></div>
                                     </div>
-                                }
+                                
                             }
                         </div>
                     </div>

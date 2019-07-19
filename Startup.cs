@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using static WebAppTry3.Controllers.AccountController;
+using static WebAppTry3.Controllers.PlayerController;
 
 namespace WebAppTry3
 
@@ -30,9 +32,14 @@ namespace WebAppTry3
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>()
-                .AddRoles<IdentityRole>();
+                .AddRoles<IdentityRole>()
+                .AddDefaultTokenProviders();            
+
+            //Register my user claim
+            services.AddScoped<IUserClaimsPrincipalFactory<User>, MyUserClaimsPrincipalFactory>();
 
             services.AddMvc()
             .AddRazorPagesOptions(options =>
@@ -48,12 +55,6 @@ namespace WebAppTry3
         {
             loggerFactory.AddConsole();
 
-            //app.Run(async (ApplicationContext) =>
-            //{
-            //    var logger = loggerFactory.CreateLogger("RequestInfoLogger");
-            //    logger.LogInformation("Processing request {0}", ApplicationContext.Request.Path);
-                
-            //});
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
