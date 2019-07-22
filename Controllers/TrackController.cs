@@ -80,10 +80,6 @@ namespace WebAppTry3.Controllers
             //var UserIDVar = _context.DBUsers.FirstOrDefault(userItem => userItem.Id == track.UserId);
             //string UserId = Convert.ToString(UserIDVar);
             //track.UserId = UserId;
-            //ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "userName", track.UserId);
-            //track.UserId = _context.DBUsers.Include(uid => uid.Id);
-            //ViewData["AlbumName"] = new SelectList(_context.Albums, "AlbumID", "AlbumName", track.AlbumName);
-            //ViewData["AlbumName"] = new SelectList(_context.Albums, "UserId", "AlbumName", track.UserId, track.AlbumName);
             //string UserId = Request.Query.FirstOrDefault(p => p.Key == "Id").Value;
             //track.UserId = UserId;
             return View(track);

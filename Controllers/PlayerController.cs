@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Web;
-using System.Security;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +9,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 
 namespace WebAppTry3.Controllers
 {
@@ -69,7 +68,34 @@ namespace WebAppTry3.Controllers
 
             return View(Tracklist);
         }
-        
+
+        public IActionResult GetPlay()
+        {
+            var PlaySong = _context.Tracks.Where(alb => alb.Album.Value == Album.Play).ToList();
+            return Json(PlaySong);
+
+        }
+
+        public IActionResult GetListToPlay()
+        {
+            var PlaySong = _context.Tracks.Where(alb => alb.Album.Value == Album.ListToPlay).ToList();
+            return Json(PlaySong);
+
+        }
+
+        public IActionResult GetHistory()
+        {
+            var PlaySong = _context.Tracks.Where(alb => alb.Album.Value == Album.History).ToList();
+            return Json(PlaySong);
+
+        }
+
+        //public JsonResult AllSongs()
+        //{
+        //    var tracks = _context.Tracks;
+        //    return new JsonResult(tracks);
+        //}
+
         //GET
         public IActionResult CreateFromPlayer()
         {
@@ -83,7 +109,7 @@ namespace WebAppTry3.Controllers
             if (ModelState.IsValid)
             {
                 //Album id = Album.ListToPlay;
-                _context.Tracks.Add(new Track { TrackID = Guid.NewGuid(), /*Album id = Album.ListToPlay*/ TrackUrl = url });
+                _context.Tracks.Add(new Track { TrackID = Guid.NewGuid(), Album = Album.ListToPlay, TrackUrl = url });
                 //track.TrackID = Guid.NewGuid();
                 //_context.Add(track);
                 await _context.SaveChangesAsync();
