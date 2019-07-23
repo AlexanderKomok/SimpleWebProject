@@ -54,7 +54,7 @@
                         @*<div class="item">*@
                             @*output PlayList*@
                             @*<div class="item">*@
-                                <div id="list-to-play1" class="item"><span></span></div>
+                                @*<div id="list-to-play1" class="item"><span></span></div>*@
                             @*</div>*@
                         @*</div>*@
                     </div>
@@ -64,9 +64,9 @@
                     <div class="list-item" id="history">
                         @*<div class="item">*@
                             @*Output history*@
-                            <div class="item">
+                            @*<div class="item">
                                 <div id="history1" class="NameHistory"><span></span></div>
-                            </div>
+                            </div>*@
                         @*</div>*@
                     </div>
                 </div>
@@ -155,6 +155,7 @@
                     if (index == trackUrl) {
                         //console.log(index);
                         $('#playing1').html(value);
+                        
                     }
                 });
             }
@@ -187,11 +188,13 @@
                 $.map(arr, function (value, index)
                 {
                     //console.log(value);
+                    var html = "<div class='item'>" + value.trackUrl + "</div>";
+                        $("#list-to-play").prepend(html);
+
+                    //var OutItem = document.createElement('div');
+                    //OutItem.innerHTML = value.trackUrl;
                     
-                    var OutItem = document.createElement('div');
-                    OutItem.innerHTML = value.trackUrl;
-                    
-                    $('#list-to-play1').first().before(OutItem);
+                    //$('#list-to-play1').first().before(OutItem);
 
                     //var ToPlayArray = new Array();
                     //$('#list-to-play1').each(function(index) {
@@ -246,9 +249,11 @@
                 $.map(arr, function (value, index)
                 {
                     //console.log(value);
-                    var OutItem = document.createElement('div');
-                    OutItem.innerHTML = value.trackUrl;
-                    $('div.NameHistory').first().before(OutItem);
+                    var html = "<div class='item'>" + value.trackUrl + "</div>";
+                        $("#history").prepend(html);
+                    //var OutItem = document.createElement('div');
+                    //OutItem.innerHTML = value.trackUrl;
+                    //$('div.NameHistory').first().before(OutItem);
                     //console.log(value.trackUrl);
                     //$('#list-to-play1').html(value.trackUrl);
                 })
@@ -281,19 +286,59 @@
                         var state = player.getPlayerState()
                         //console.log(state)
                         if (state == 0) {
-                            var ver = "?version=3";
-                            var url = 'https://www.youtube.com/watch?v=h_j_48G2L_o' + ver;
-                            console.log(url);
+                            var ToPlayArray = new Array();
+                            $('#list-to-play').each(function (index, value) {
+                              console.log(value);
+                              ToPlayArray[index] =    $(this).html();
+                            })
+                            console.log(ToPlayArray);
+                            //need to google about jQuery.grep()
+
+
+                            //var elems = document.getElementById("#list-to-play")                    
+                            //var ArrFromView = jQuery.makeArray(elems);
+                            //console.log(ArrFromView);
+
+                            //$(document).ready(function () {
+                            //    var trackUrl = "trackUrl"
+                            //    $.ajax({
+                            //        type: "GET",
+                            //        url: "Player/GetListToPlay",
+                            //        contentType: 'application/html; charset=utf-8',
+                            //        type: 'GET',
+                            //        dataType: 'html',
+                            //        success: function (response) {
+                            //            var json_obj = $.parseJSON(response);
+                            //            $.each(json_obj[i], function (index, value) {
+                            //                if (index == trackUrl) {
+                                                
+                            //                    FirstPartUrl = value;
+                            //                    var ver = "?version=3";
+                            //                    var url = FirstPartUrl + ver;
+                            //                    console.log(url);
+                            //                    let re = /^(https?:\/\/)?((www\.)?(youtube(-nocookie)?|youtube.googleapis)\.com.*(v\/|v=|vi=|vi\/|e\/|embed\/|user\/.*\/u\/\d+\/)|youtu\.be\/)([_0-9a-z-]+)/i;
+                            //                    let id = url.match(re)[7];
+                            //                    console.log(id);
+                            //                    player.loadVideoById(id);
+                            //                    player.playVideo();
+                            //                }
+                            //            });
+                            //        }
+                            //    })
+                            //});
+                            //var ver = "?version=3";
+                            //var url = FirstPartUrl + ver;
+                            //console.log(url);
                             //convert from youtube url to youtube id
-                            let re = /^(https?:\/\/)?((www\.)?(youtube(-nocookie)?|youtube.googleapis)\.com.*(v\/|v=|vi=|vi\/|e\/|embed\/|user\/.*\/u\/\d+\/)|youtu\.be\/)([_0-9a-z-]+)/i;
-                            let id = url.match(re)[7];
-                            console.log(id);
+                            //let re = /^(https?:\/\/)?((www\.)?(youtube(-nocookie)?|youtube.googleapis)\.com.*(v\/|v=|vi=|vi\/|e\/|embed\/|user\/.*\/u\/\d+\/)|youtu\.be\/)([_0-9a-z-]+)/i;
+                            //let id = url.match(re)[7];
+                            //console.log(id);
                             //YouTubeGetID(url);
                             //var id = id;
-                            console.log(id)
+                            //console.log(id)
                             //playerView.loadVideoByURL(id)
-                            player.loadVideoById(id);
-                            player.playVideo();
+                            //player.loadVideoById(id);
+                            //player.playVideo();
                         }
                     }
 

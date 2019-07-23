@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebAppTry3.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class UsersController : Controller
     {
         UserManager<User> _userManager;
