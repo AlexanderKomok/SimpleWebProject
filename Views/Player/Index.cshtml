@@ -6,8 +6,8 @@
 @ViewData["SomeMessage"]
 
 
-<a>@User.FindFirst("UserName").Value</a>
-<a>@ViewData["EmailMessege"]</a>
+@*<a>@User.FindFirst("UserName").Value</a>
+<a>@ViewData["EmailMessege"]</a>*@
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,10 +18,10 @@
     <h2>YouTube Player</h2>
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
-                <iframe width="560" height="315"
-                        src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0"
-                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div id="player" class="col-md-6">
+                @*<iframe width="560" height="315"
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>*@
             </div>
             @*<div class="col-md-5">
                     <div class="form-group">
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="col-md-1">
-                <button id="TestButtonForAjax" type="submit" value="Save" class="btn btn-primary">Add</button>
+                <button id="TestButtonForAjax" value="Save" class="btn btn-primary">Add</button>
             </div>
 
             <div class="container">
@@ -50,24 +50,24 @@
                 </div>
                 <div class="col-md-5">
                     <b>List to play</b>
-                    <div class="list-item" id="list-to-play">
-                        <div class="item">
+                    <div class="list-item"  id="list-to-play">
+                        @*<div class="item">*@
                             @*output PlayList*@
-                            <div class="item">
-                                <div id="list-to-play1" class="name"><span></span></div>
-                            </div>
-                        </div>
+                            @*<div class="item">*@
+                                <div id="list-to-play1" class="item"><span></span></div>
+                            @*</div>*@
+                        @*</div>*@
                     </div>
                 </div>
                 <div class="col-md-5">
                     <b>History</b>
                     <div class="list-item" id="history">
-                        <div class="item">
-                            @*Output history*@                        
-                                <div class="item">
-                                    <div id="history1" class="name"><span></span></div>
-                                </div>
-                        </div>
+                        @*<div class="item">*@
+                            @*Output history*@
+                            <div class="item">
+                                <div id="history1" class="NameHistory"><span></span></div>
+                            </div>
+                        @*</div>*@
                     </div>
                 </div>
 
@@ -128,8 +128,9 @@
                 type: "POST",
                 url: "Player/CreateFromPlayer",
                 data: { url: url },
-                success: function () {
-
+                success: function () { 
+                    var html = "<div class='item'>" + url + "</div>";
+                    $("#list-to-play").prepend(html);
                 }
             })
         })
@@ -145,23 +146,25 @@
             type: 'GET',
             dataType: 'html',
             success: function (response) {
-                console.log(response);
+                //console.log(response);
                 var json_obj = $.parseJSON(response);
-                for (var i in json_obj[0])
+                //for (var i in json_obj[0])
 
-                    $.each(json_obj[0], function (index, value) {
-                        console.log(index + ':' + value);
-                        if (index == trackUrl) {
-                            console.log(index);
-                            $('#playing1').html(value);
-                        }
-                    });
+                $.each(json_obj[0], function (index, value) {
+                    //console.log(index + ':' + value);
+                    if (index == trackUrl) {
+                        //console.log(index);
+                        $('#playing1').html(value);
+                    }
+                });
             }
         })
     </script>
 
     @*Output List to play*@
     <script type="text/javascript" language="javascript">
+
+     function ListToPlay () {
         var trackUrl = "trackUrl"
         $.ajax({
             type: "GET",
@@ -170,19 +173,52 @@
             type: 'GET',
             dataType: 'html',
             success: function (response) {
-                console.log(response);
+                //console.log(response);
                 var json_obj = $.parseJSON(response);
-                for (var i in json_obj[0])
+                //$.each(json_obj[0], function (index, value) {
+                //    console.log(index + ':' + value);
+                //    if (index == trackUrl) {
+                //        console.log(index);
+                //        $('#list-to-play1').html(value);
+                //    }
+                //});
+                var arr = $.makeArray(json_obj)
+                //console.log(arr);
+                $.map(arr, function (value, index)
+                {
+                    //console.log(value);
+                    
+                    var OutItem = document.createElement('div');
+                    OutItem.innerHTML = value.trackUrl;
+                    
+                    $('#list-to-play1').first().before(OutItem);
 
-                    $.each(json_obj[0], function (index, value) {
-                        console.log(index + ':' + value);
-                        if (index == trackUrl) {
-                            console.log(index);
-                            $('#list-to-play1').html(value);
-                        }
-                    });
+                    //var ToPlayArray = new Array();
+                    //$('#list-to-play1').each(function(index) {
+                    //  ToPlayArray[index] =    $(this).html();
+                    //})
+                    //console.log(ToPlayArray);
+
+                    //var elems = document.getElementsByClassName("NamePlayList")                    
+                    //var ArrFromView = jQuery.makeArray(elems);
+                    //console.log(ArrFromView.document.body);
+                    //console.log(ArrFromView);
+                    //console.log(value.trackUrl);
+                    //$('#list-to-play1').html(value.trackUrl);
+
+                    //var elems = document.getElementsByClassName("NamePlayList")                    
+                    //var ArrFromView = jQuery.makeArray(elems);
+                    //var uniqueArr = $.unique(ArrFromView.sort()).sort();
+                    //console.log(uniqueArr);
+                })
+
+
             }
         })
+    }
+    
+        $(document).ready(ListToPlay);
+        //$('#TestButtonForAjax').on('click', ListToPlay); 
     </script>
 
     @*Output History*@
@@ -195,18 +231,75 @@
             type: 'GET',
             dataType: 'html',
             success: function (response) {
-                console.log(response);
+                //console.log(response);
                 var json_obj = $.parseJSON(response);
-                for (var i in json_obj[0])
-
-                    $.each(json_obj[0], function (index, value) {
-                        console.log(index + ':' + value);
-                        if (index == trackUrl) {
-                            console.log(index);
-                            $('#history1').html(value);
-                        }
-                    });
+                console.log(json_obj);
+                //$.each(json_obj[0], function (index, value) {
+                //    //console.log(index + ':' + value);
+                //    if (index == trackUrl) {
+                //        //console.log(index);
+                //        $('#history1').html(value);
+                //    }
+                //});
+                var arr = $.makeArray(json_obj)
+                console.log(arr);
+                $.map(arr, function (value, index)
+                {
+                    //console.log(value);
+                    var OutItem = document.createElement('div');
+                    OutItem.innerHTML = value.trackUrl;
+                    $('div.NameHistory').first().before(OutItem);
+                    //console.log(value.trackUrl);
+                    //$('#list-to-play1').html(value.trackUrl);
+                })
             }
         })
     </script>
+
+    @*Output Player*@
+    <script type="text/javascript" language="javascript">
+        //load Youtube API asynchronously
+        var tag = document.createElement('script')
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0]
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+
+        var player // variable to hold new YT.Player() instance
+
+    //initialize a Youtube player
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '315',
+                width: '560',
+                playerVars: { autoplay: 1 },
+                videoId: 'dQw4w9WgXcQ',
+                events: {
+                    'onReady': function (event) {
+                    },                  
+                    'onStateChange': function (event) {
+                        //var id = "I_izvAbhExY";
+                        var state = player.getPlayerState()
+                        //console.log(state)
+                        if (state == 0) {
+                            var ver = "?version=3";
+                            var url = 'https://www.youtube.com/watch?v=h_j_48G2L_o' + ver;
+                            console.log(url);
+                            //convert from youtube url to youtube id
+                            let re = /^(https?:\/\/)?((www\.)?(youtube(-nocookie)?|youtube.googleapis)\.com.*(v\/|v=|vi=|vi\/|e\/|embed\/|user\/.*\/u\/\d+\/)|youtu\.be\/)([_0-9a-z-]+)/i;
+                            let id = url.match(re)[7];
+                            console.log(id);
+                            //YouTubeGetID(url);
+                            //var id = id;
+                            console.log(id)
+                            //playerView.loadVideoByURL(id)
+                            player.loadVideoById(id);
+                            player.playVideo();
+                        }
+                    }
+
+                }
+            })
+        }    
+
+        </script>
 }
