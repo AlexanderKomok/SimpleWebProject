@@ -15,7 +15,7 @@ namespace WebAppTry3.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
+                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -146,7 +146,7 @@ namespace WebAppTry3.Migrations
 
                     b.Property<string>("TrackName")
                         .HasColumnName("Song")
-                        .HasMaxLength(30);
+                        .HasMaxLength(100);
 
                     b.Property<string>("TrackUrl")
                         .IsRequired()

@@ -163,7 +163,7 @@ namespace WebAppTry3.Migrations
                     UserId = table.Column<string>(nullable: true),
                     Link = table.Column<string>(maxLength: 250, nullable: false),
                     Band = table.Column<string>(maxLength: 20, nullable: true),
-                    Song = table.Column<string>(maxLength: 30, nullable: true),
+                    Song = table.Column<string>(maxLength: 100, nullable: true),
                     Grade = table.Column<int>(nullable: true),
                     AlbumName = table.Column<int>(nullable: true)
                 },

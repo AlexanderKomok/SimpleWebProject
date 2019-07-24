@@ -39,7 +39,7 @@ namespace WebAppTry3.Models
             modelBuilder.Entity<Track>()
                 .Property(t => t.ArtistName).HasColumnName("Band").HasMaxLength(20);
             modelBuilder.Entity<Track>()
-                .Property(t => t.TrackName).HasColumnName("Song").HasMaxLength(30);
+                .Property(t => t.TrackName).HasColumnName("Song").HasMaxLength(100);
             modelBuilder.Entity<Track>()
                 .Property(t => t.Grade).HasColumnName("Grade");
             modelBuilder.Entity<Track>()

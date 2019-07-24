@@ -1,5 +1,5 @@
 ﻿@model WebAppTry3.DBEntities.Track
-
+@using WebAppTry3.DBEntities
 @{
     ViewData["Title"] = "Edit";
 }
@@ -12,15 +12,11 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="TrackID" />
-            @*<div class="form-group">
-                <label asp-for="User" class="control-label"></label>
-                <select asp-for="User.UserName" class="form-control" asp-items="ViewBag.UserName"></select>
-                <span asp-validation-for="User.UserName" class="text-danger"></span>
-            </div>*@
+            <input type="hidden" asp-for="TrackID" />                     
             <div class="form-group">
                 <label asp-for="Album" class="control-label"></label>
-                <select asp-for="Album" class="form-control"></select>
+                <select asp-for="Album" class="form-control" asp-items="new SelectList(Enum.GetNames(typeof(Album)))"></select>
+                @*<span asp-validation-for="Album" class="text-danger"></span>*@
             </div>
             <div class="form-group">
                 <label asp-for="TrackUrl" class="control-label"></label>
@@ -39,7 +35,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Grade" class="control-label"></label>
-                <input asp-for="Grade" class="form-control" />
+                <input asp-for="Grade" class="form-control" asp-items="new SelectList(Enum.GetNames(typeof(Grade)))"/>
                 <span asp-validation-for="Grade" class="text-danger"></span>
             </div>
             <div class="form-group">

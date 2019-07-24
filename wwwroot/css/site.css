@@ -35,3 +35,38 @@ body {
         display: none;
     }
 }
+
+.list-item {
+    background-color: #ddd;
+    padding: 2px;
+}
+
+    .list-item .item {
+        background-color: #efefef;
+        padding: 5px 20px;
+        margin: 2px;
+    }
+
+    .list-item[id='playing'] {
+        background-color: #80e080;
+    }
+
+        .list-item[id='playing'] .item {
+            background-color: #afffaf;
+        }
+
+            .list-item[id='playing'] .item:hover {
+                background-color: #80f080;
+            }
+
+            .list-item[id='playing'] .item:active {
+                background-color: #80d080;
+            }
+
+    .list-item .item:hover {
+        background-color: #e0e0e0;
+    }
+
+    .list-item .item:active {
+        background-color: #dadada;
+    }

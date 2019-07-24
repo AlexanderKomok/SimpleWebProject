@@ -135,7 +135,7 @@ namespace WebAppTry3.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", track.UserId);
+            //ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", track.UserId);
 
             return View(track);
         }
