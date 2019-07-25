@@ -7,7 +7,7 @@
 
 
 @*<a>@User.FindFirst("UserName").Value</a>
-<a>@ViewData["EmailMessege"]</a>*@
+    <a>@ViewData["EmailMessege"]</a>*@
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,14 +22,14 @@
         <div class="row">
             <div id="player" class="col-md-6">
                 @*<iframe width="560" height="315"
-                          src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0"
-                          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>*@
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>*@
             </div>
             @*<div class="col-md-5">
-                <div class="form-group">
-                    <input type="url" name="TrackUrl" class="form-control" placeholder="Insert your url" />
-                </div>
-            </div>*@
+                    <div class="form-group">
+                        <input type="url" name="TrackUrl" class="form-control" placeholder="Insert your url" />
+                    </div>
+                </div>*@
             <div class="col-md-5">
                 <div class="form-group">
                     <input type="url" id="TestUrlForAjax" class="form-control" placeholder="Insert your url" />
@@ -39,58 +39,14 @@
                 <button id="TestButtonForAjax" value="Save" class="btn btn-primary">Add</button>
             </div>
 
-            <div class="container">
-                <div class="col-md-5">
-                    <b>Now Playing</b>
-                    <div class="list-item" id="playing">
-                        @*Output Play*@
-                        @foreach (var item in Model.ListPlay)
-                        {
 
 
-                        <div class="item">
-                            <div id="playing1" @*class="name" *@><span>@item.TrackName</span></div>
-                        </div>
 
-                        }
-
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <b>List to play</b>
-                    <div class="list-item" id="list-to-play">
-                        @*<div class="item">
-                            *@
-                            @*output PlayList*@
-                            @foreach (var item in Model.ListToPlay)
-                            {
-                            <div class="item">
-                                <div id="list-to-play1"><span>@item.TrackName</span></div>
-                            </div>
-                            }
-                            @*
-                        </div>*@
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <b>History</b>
-                    <div class="list-item" id="history">
-                        @*<div class="item">
-                            *@
-                            @*Output history*@
-                            @foreach (var item in Model.ListHistory)
-                            {
-                            <div class="item">
-                                <div id="history1"><span>@item.TrackName</span></div>
-                            </div>
-                            }
-                            @*
-                        </div>*@
-                    </div>
-                </div>
-
-
+            <div id="PartialViewId">
+                @Html.Partial("PlayerPartialView", Model)
             </div>
+           
+
         </div>
     </div>
 </body>

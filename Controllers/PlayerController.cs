@@ -11,11 +11,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 
+
 namespace WebAppTry3.Controllers
 {
     
     [Authorize]
-    public class PlayerController : Controller
+    public class PlayerController : Microsoft.AspNetCore.Mvc.Controller
     {
 
         private readonly ApplicationContext _context;
@@ -28,6 +29,9 @@ namespace WebAppTry3.Controllers
 
         }
 
+        
+
+
         //My own implementation of IUserClaimsPrincipalFactory(just kidding it from the internet)
         public class MyUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<User, IdentityRole>
         {
@@ -38,7 +42,7 @@ namespace WebAppTry3.Controllers
                 : base(userManager, roleManager, optionsAccessor)
             {
             }
-            //
+         
             protected override async Task<ClaimsIdentity> GenerateClaimsAsync(User user)
             {
                 var identity = await base.GenerateClaimsAsync(user);
@@ -55,32 +59,26 @@ namespace WebAppTry3.Controllers
             public List<Track> ListHistory { get; set; }
         }
 
+        
+
+        public IActionResult DisplayPartialView()
+        {
+            string viewUrl = Url.RouteUrl(new { Controller = "Player", Action = "Index" });
+
+            System.Net.WebClient client = new System.Net.WebClient();
+            client.Encoding = System.Text.Encoding.UTF8;
+            string result = client.DownloadString(new Uri(viewUrl));
+            return PartialView(result);
+        }
+
         public IActionResult Index()
         {
-
-            //var user = HttpContext.User.Identity.Name;
-            //var UserEntity = _context.DBUsers.FirstOrDefault(o => o.UserName == user);
-            //string Email = UserEntity.Email;
             var EmailContext = _httpContextAccessor.HttpContext.User.FindFirst("Email").Value;
-            //var ListPlay = _context.Tracks.Where(alb => alb.Album.Value == Album.Play).ToList();
-            //var ListToPlay = _context.Tracks.Where(alb => alb.Album.Value == Album.ListToPlay).ToList();
-            //var ListHistory = _context.Tracks.Where(alb => alb.Album.Value == Album.History).ToList();
             var FullSortTrackList = new FullTrackList();
             FullSortTrackList.ListPlay = _context.Tracks.Where(alb => alb.Album.Value == Album.Play).ToList();
             FullSortTrackList.ListToPlay = _context.Tracks.Where(alb => alb.Album.Value == Album.ListToPlay).ToList();
             FullSortTrackList.ListHistory = _context.Tracks.Where(alb => alb.Album.Value == Album.History).ToList();
 
-            bool IsAdmin = HttpContext.User.IsInRole("admin");        
-            if (IsAdmin == true)
-            {
-                ViewData["SomeMessage"] = "My congratulations you are admin";
-                //ViewData["EmailMessege"] = Email;
-            }
-            //var Tracklist = _context.Tracks.ToList();
-            //var Albumlist = _context.Tracks.ToList();
-            //ViewData["TrackUrl"] = list;
-            
-            //return View(Tracklist);
             return View(FullSortTrackList);
         }
 
@@ -122,7 +120,7 @@ namespace WebAppTry3.Controllers
         public async Task<IActionResult> CreateFromPlayer(string url, string title)
         {
             if (ModelState.IsValid)
-            {
+            {               
                 //Album id = Album.ListToPlay;
                 _context.Tracks.Add(new Track { TrackID = Guid.NewGuid(), Album = Album.ListToPlay, TrackUrl = url, TrackName = title});
                 //track.TrackID = Guid.NewGuid();

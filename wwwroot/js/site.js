@@ -12,6 +12,7 @@ $('#TestButtonForAjax').on('click', function () {
             console.log(d);
             var data = JSON.parse(d);
             title = data.title;
+            debugger
 
         }
     });
@@ -24,8 +25,8 @@ $('#TestButtonForAjax').on('click', function () {
         data: { url: url, title: title },
         success: function () {
             console.log(title);
-            var html = "<div class='item'>" + url + "</div>";
-            $("#list-to-play").prepend(html);
+            //var html = "<div class='item'>" + url + "</div>";
+            //$("#list-to-play").prepend(html);
         }
     })
 })
@@ -109,37 +110,37 @@ $('#TestButtonForAjax').on('click', function () {
 //</script> *@
 
 
-                            //Get Play
+//Get Play
 
 var UrlPlaySong = ""
 var currId;
 
-    var trackUrl = "trackUrl"
-    $.ajax({
-        type: "GET",
-        url: "Player/GetPlay",
-        contentType: 'application/html; charset=utf-8',
-        type: 'GET',
-        dataType: 'html',
-        async: false,
-        success: function (response) {
-            console.log(response)
-            var json_obj = $.parseJSON(response);
-            console.log(json_obj)
-            $.each(json_obj[0], function (index, value) {
-                //console.log(index + ':' + value);
-                if (index == trackUrl) {
-                    UrlPlaySong = value;
+var trackUrl = "trackUrl"
+$.ajax({
+    type: "GET",
+    url: "Player/GetPlay",
+    contentType: 'application/html; charset=utf-8',
+    type: 'GET',
+    dataType: 'html',
+    async: false,
+    success: function (response) {
+        //console.log(response)
+        var json_obj = $.parseJSON(response);
+        //console.log(json_obj)
+        $.each(json_obj[0], function (index, value) {
+            //console.log(index + ':' + value);
+            if (index == trackUrl) {
+                UrlPlaySong = value;
 
-                }
-            })
-        }
-    });
+            }
+        })
+    }
+});
 
 
 
 var url = UrlPlaySong;
-let re = /^(https?:\/\/)?((www\.)?(youtube(-nocookie)?|youtube.googleapis)\.com.*(v\/|v=|vi=|vi\/|e\/|embed\/|user\/.*\/u\/\d+\/)|youtu\.be\/)([_0-9a-z-]+)/i;
+var re = /^(https?:\/\/)?((www\.)?(youtube(-nocookie)?|youtube.googleapis)\.com.*(v\/|v=|vi=|vi\/|e\/|embed\/|user\/.*\/u\/\d+\/)|youtu\.be\/)([_0-9a-z-]+)/i;
 var PlaySongid = url.match(re)[7];
 
 //Output Player 
@@ -187,7 +188,7 @@ function onYouTubeIframeAPIReady() {
                                         console.log(FirstPartUrl);
                                         var ver = "?version=3";
                                         var url = FirstPartUrl + ver;
-                                        let re = /^(https?:\/\/)?((www\.)?(youtube(-nocookie)?|youtube.googleapis)\.com.*(v\/|v=|vi=|vi\/|e\/|embed\/|user\/.*\/u\/\d+\/)|youtu\.be\/)([_0-9a-z-]+)/i;
+                                        var re = /^(https?:\/\/)?((www\.)?(youtube(-nocookie)?|youtube.googleapis)\.com.*(v\/|v=|vi=|vi\/|e\/|embed\/|user\/.*\/u\/\d+\/)|youtu\.be\/)([_0-9a-z-]+)/i;
                                         id = url.match(re)[7];
                                         player.loadVideoById(id);
                                         player.playVideo();
@@ -200,11 +201,24 @@ function onYouTubeIframeAPIReady() {
                     $(document).ready(function () {
                         var url = FirstPartUrl;
                         console.log(url)
+
                         $.ajax({
                             type: "POST",
                             url: "Player/ChangeFromPlayer",
                             data: { url: url },
                             success: function () {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "Player/DisplayPartialView",
+                                    success: function (res) {
+                                        $('#PartialViewId').html(res);
+                                    }
+                                });  
+                                ////$("#OutputList").load("#OutputList");
+
+                                //$("#PartialViewId").empty();
+                                //$('PartialViewId').load('Player/DisplayPartialView')
+
                             }
                         })
                     })
