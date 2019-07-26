@@ -1,4 +1,3 @@
-
 namespace WebAppTry3.Models
 {
     public class ErrorViewModel

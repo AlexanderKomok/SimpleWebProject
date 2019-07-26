@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-
-namespace WebAppTry3.ViewModels
+﻿namespace WebAppTry3.ViewModels
 {
     public class EditUserViewModel
     {

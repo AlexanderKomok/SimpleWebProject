@@ -4,11 +4,6 @@ using WebAppTry3.Models;
 using WebAppTry3.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
-using System.Security.Claims;
-using Microsoft.Extensions.Options;
 
 namespace WebAppTry3.Controllers
 {
@@ -47,11 +42,7 @@ namespace WebAppTry3.Controllers
                 var u = await _userManager.FindByEmailAsync(model.Email);
                 var r = await _signInManager.CheckPasswordSignInAsync(u, model.Password, false);
                 await _signInManager.SignInAsync(u, true);
-                //await _userManager.AddClaimAsync(u, new Claim("Email", model.Email ));
-                //var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(u);
-                //await _signInManager.RefreshSignInAsync(user);
-                //await _signInManager.RefreshSignInAsync(u);
-
+                return RedirectToAction("Index", "Home");
             }
             var errors = ModelState.Values.SelectMany(v => v.Errors);
             return View(model);

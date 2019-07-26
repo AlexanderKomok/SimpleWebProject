@@ -13,7 +13,7 @@
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="~/css/site"></script>
-    <script src="~/js/site.js"></script>
+    <script src="~/js/PlayerScripts.js"></script>
 </head>
 <body>
 
@@ -25,11 +25,6 @@
                     src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>*@
             </div>
-            @*<div class="col-md-5">
-                    <div class="form-group">
-                        <input type="url" name="TrackUrl" class="form-control" placeholder="Insert your url" />
-                    </div>
-                </div>*@
             <div class="col-md-5">
                 <div class="form-group">
                     <input type="url" id="TestUrlForAjax" class="form-control" placeholder="Insert your url" />
@@ -42,12 +37,20 @@
 
 
 
-            <div id="PartialViewId">
+            <div id="OutputTable">
                 @Html.Partial("PlayerPartialView", Model)
             </div>
-           
+
 
         </div>
     </div>
 </body>
 </html>
+
+@*@section scripts {
+    <script>
+        //location.reload();
+
+        
+    </script>
+}*@

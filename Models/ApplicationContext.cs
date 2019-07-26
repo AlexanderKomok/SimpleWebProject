@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using WebAppTry3.DBEntities;
 
 namespace WebAppTry3.Models
@@ -10,8 +9,6 @@ namespace WebAppTry3.Models
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
-            //Database.EnsureCreated();
-            //Database.SetInitializer<ApplicationContex>(null);
         }
 
         //
@@ -22,10 +19,12 @@ namespace WebAppTry3.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Realization relationship many to many between Track and Album in EF Core
-           
+
+            //Once upon a time they were here
 
             //Realization relationship one to many between User and Album in EF Core
 
+            //Once upon a time they were here
 
             //Realization relationship one to many between User and Track in EF Core
             modelBuilder.Entity<Track>()
@@ -46,10 +45,8 @@ namespace WebAppTry3.Models
                 .Property(t => t.Album).HasColumnName("AlbumName");
             modelBuilder.Entity<Track>()
                 .Property(t => t.TrackUrl).HasColumnName("Link").HasMaxLength(250).IsRequired();
-           
-            //modelBuilder.Entity<Track>()
-            //.Property(t => t.UserName).HasColumnName("UserName").HasMaxLength(250);
 
+            
             //Stuffing Album in separate method
 
 

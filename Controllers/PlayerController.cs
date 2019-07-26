@@ -5,6 +5,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAppTry3.DBEntities;
 using WebAppTry3.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.IO;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +19,59 @@ using System.Collections.Generic;
 
 namespace WebAppTry3.Controllers
 {
-    
+
+    public static class ControllerExtensions
+    {
+        public static async Task<string> RenderViewAsync<TModel>(this Controller controller, string viewName, TModel model, bool isPartial = false)
+        {
+            if (string.IsNullOrEmpty(viewName))
+            {
+                viewName = controller.ControllerContext.ActionDescriptor.ActionName;
+            }
+
+            controller.ViewData.Model = model;
+
+            using (var writer = new StringWriter())
+            {
+                IViewEngine viewEngine = controller.HttpContext.RequestServices.GetService(typeof(ICompositeViewEngine)) as ICompositeViewEngine;
+                ViewEngineResult viewResult = GetViewEngineResult(controller, viewName, isPartial, viewEngine);
+
+                if (viewResult.Success == false)
+                {
+                    throw new System.Exception($"A view with the name {viewName} could not be found");
+                }
+
+                ViewContext viewContext = new ViewContext(
+                    controller.ControllerContext,
+                    viewResult.View,
+                    controller.ViewData,
+                    controller.TempData,
+                    writer,
+                    new HtmlHelperOptions()
+                );
+
+                await viewResult.View.RenderAsync(viewContext);
+
+                return writer.GetStringBuilder().ToString();
+            }
+        }
+
+        private static ViewEngineResult GetViewEngineResult(Controller controller, string viewName, bool isPartial, IViewEngine viewEngine)
+        {
+            if (viewName.StartsWith("~/"))
+            {
+                var hostingEnv = controller.HttpContext.RequestServices.GetService(typeof(IHostingEnvironment)) as IHostingEnvironment;
+                return viewEngine.GetView(hostingEnv.WebRootPath, viewName, !isPartial);
+            }
+            else
+            {
+                return viewEngine.FindView(controller.ControllerContext, viewName, !isPartial);
+
+            }
+        }
+    }
+
+
     [Authorize]
     public class PlayerController : Microsoft.AspNetCore.Mvc.Controller
     {
@@ -59,16 +116,24 @@ namespace WebAppTry3.Controllers
             public List<Track> ListHistory { get; set; }
         }
 
-        
+
+
+
 
         public IActionResult DisplayPartialView()
         {
-            string viewUrl = Url.RouteUrl(new { Controller = "Player", Action = "Index" });
+            //string viewUrl = Url.RouteUrl(new { Controller = "Player", Action = "Index" });
 
-            System.Net.WebClient client = new System.Net.WebClient();
-            client.Encoding = System.Text.Encoding.UTF8;
-            string result = client.DownloadString(new Uri(viewUrl));
-            return PartialView(result);
+            //System.Net.WebClient client = new System.Net.WebClient();
+            //client.Encoding = System.Text.Encoding.UTF8;
+            //string result = client.DownloadString(new Uri(viewUrl));
+            var FullSortTrackList = new FullTrackList();
+            FullSortTrackList.ListPlay = _context.Tracks.Where(alb => alb.Album.Value == Album.Play).ToList();
+            FullSortTrackList.ListToPlay = _context.Tracks.Where(alb => alb.Album.Value == Album.ListToPlay).ToList();
+            FullSortTrackList.ListHistory = _context.Tracks.Where(alb => alb.Album.Value == Album.History).ToList();
+            var partialViewHtml = this.RenderViewAsync("Index", FullSortTrackList);
+            return Ok(partialViewHtml);
+
         }
 
         public IActionResult Index()
@@ -103,12 +168,6 @@ namespace WebAppTry3.Controllers
 
         }
 
-        //public JsonResult AllSongs()
-        //{
-        //    var tracks = _context.Tracks;
-        //    return new JsonResult(tracks);
-        //}
-
         //GET
         public IActionResult CreateFromPlayer()
         {
@@ -137,7 +196,7 @@ namespace WebAppTry3.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeFromPlayer(string url, Track track)
+        public async Task<IActionResult> ChangeFromPlayer(string url)
         {
             if (ModelState.IsValid)
             {                
