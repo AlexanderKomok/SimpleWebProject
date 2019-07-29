@@ -86,8 +86,6 @@ namespace WebAppTry3.Controllers
 
         }
 
-        
-
 
         //My own implementation of IUserClaimsPrincipalFactory(just kidding it from the internet)
         public class MyUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<User, IdentityRole>
@@ -116,10 +114,6 @@ namespace WebAppTry3.Controllers
             public List<Track> ListHistory { get; set; }
         }
 
-
-
-
-
         public IActionResult DisplayPartialView()
         {
             //string viewUrl = Url.RouteUrl(new { Controller = "Player", Action = "Index" });
@@ -147,27 +141,6 @@ namespace WebAppTry3.Controllers
             return View(FullSortTrackList);
         }
 
-        public IActionResult GetPlay()
-        {
-            var PlaySong = _context.Tracks.Where(alb => alb.Album.Value == Album.Play).ToList();
-            return Json(PlaySong);
-
-        }
-
-        public IActionResult GetListToPlay()
-        {
-            var PlaySong = _context.Tracks.Where(alb => alb.Album.Value == Album.ListToPlay).ToList();
-            return Ok(PlaySong);
-
-        }
-
-        public IActionResult GetHistory()
-        {
-            var PlaySong = _context.Tracks.Where(alb => alb.Album.Value == Album.History).ToList();
-            return Json(PlaySong);
-
-        }
-
         //GET
         public IActionResult CreateFromPlayer()
         {
@@ -180,10 +153,7 @@ namespace WebAppTry3.Controllers
         {
             if (ModelState.IsValid)
             {               
-                //Album id = Album.ListToPlay;
                 _context.Tracks.Add(new Track { TrackID = Guid.NewGuid(), Album = Album.ListToPlay, TrackUrl = url, TrackName = title});
-                //track.TrackID = Guid.NewGuid();
-                //_context.Add(track);
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index", "Player");
@@ -196,14 +166,16 @@ namespace WebAppTry3.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeFromPlayer(string url)
+        public async Task<IActionResult> ChangeFromPlayer(string songUrl)
         {
             if (ModelState.IsValid)
-            {                
+            {
+                //Get what's playing now and send to history
                 var PlaySong = _context.Tracks.FirstOrDefault(alb => alb.Album.Value == Album.Play);
                 PlaySong.Album = Album.History;
-                
-                var TrackEntity = _context.Tracks.FirstOrDefault(o => o.TrackUrl == url);
+
+                //Get a song from the playlist and move to playable
+                var TrackEntity = _context.Tracks.FirstOrDefault(o => o.TrackUrl == songUrl);
                 TrackEntity.Album = Album.Play;
                 await _context.SaveChangesAsync();
             }
