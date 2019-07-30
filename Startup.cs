@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using static WebAppTry3.Controllers.AccountController;
 using static WebAppTry3.Controllers.PlayerController;
 
 namespace WebAppTry3

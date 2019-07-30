@@ -137,13 +137,6 @@ namespace WebAppTry3.Migrations
                     b.Property<int?>("Album")
                         .HasColumnName("AlbumName");
 
-                    b.Property<string>("ArtistName")
-                        .HasColumnName("Band")
-                        .HasMaxLength(20);
-
-                    b.Property<int?>("Grade")
-                        .HasColumnName("Grade");
-
                     b.Property<string>("TrackName")
                         .HasColumnName("Song")
                         .HasMaxLength(100);

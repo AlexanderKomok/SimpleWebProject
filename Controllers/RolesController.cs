@@ -100,6 +100,7 @@ namespace WebAppTry3.Controllers
                 await _userManager.AddToRolesAsync(user, addedRoles);
 
                 await _userManager.RemoveFromRolesAsync(user, removedRoles);
+                return RedirectToAction("UserList", "Roles");
             }
 
             return NotFound();

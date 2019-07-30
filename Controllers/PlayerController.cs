@@ -86,7 +86,6 @@ namespace WebAppTry3.Controllers
 
         }
 
-
         //My own implementation of IUserClaimsPrincipalFactory(just kidding it from the internet)
         public class MyUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<User, IdentityRole>
         {
@@ -103,6 +102,7 @@ namespace WebAppTry3.Controllers
                 var identity = await base.GenerateClaimsAsync(user);
                 identity.AddClaim(new Claim("UserName", user.UserName ?? ""));
                 identity.AddClaim(new Claim("Email", user.Email ?? ""));
+                identity.AddClaim(new Claim("Id", user.Id ?? ""));
                 return identity;
             }
         }
@@ -114,18 +114,13 @@ namespace WebAppTry3.Controllers
             public List<Track> ListHistory { get; set; }
         }
 
-        public IActionResult DisplayPartialView()
-        {
-            //string viewUrl = Url.RouteUrl(new { Controller = "Player", Action = "Index" });
-
-            //System.Net.WebClient client = new System.Net.WebClient();
-            //client.Encoding = System.Text.Encoding.UTF8;
-            //string result = client.DownloadString(new Uri(viewUrl));
+        public async Task<IActionResult> DisplayPartialView()
+        {            
             var FullSortTrackList = new FullTrackList();
             FullSortTrackList.ListPlay = _context.Tracks.Where(alb => alb.Album.Value == Album.Play).ToList();
             FullSortTrackList.ListToPlay = _context.Tracks.Where(alb => alb.Album.Value == Album.ListToPlay).ToList();
             FullSortTrackList.ListHistory = _context.Tracks.Where(alb => alb.Album.Value == Album.History).ToList();
-            var partialViewHtml = this.RenderViewAsync("Index", FullSortTrackList);
+            var partialViewHtml = await this.RenderViewAsync("Index", FullSortTrackList);
             return Ok(partialViewHtml);
 
         }
@@ -152,8 +147,10 @@ namespace WebAppTry3.Controllers
         public async Task<IActionResult> CreateFromPlayer(string url, string title)
         {
             if (ModelState.IsValid)
-            {               
-                _context.Tracks.Add(new Track { TrackID = Guid.NewGuid(), Album = Album.ListToPlay, TrackUrl = url, TrackName = title});
+            {
+                var trackOwn = _context.DBUsers.FirstOrDefault(to => to.UserName == User.Identity.Name);
+                var UserIdFromLINQ = trackOwn.Id;
+                _context.Tracks.Add(new Track { TrackID = Guid.NewGuid(), Album = Album.ListToPlay, TrackUrl = url, TrackName = title, UserId = UserIdFromLINQ});
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index", "Player");

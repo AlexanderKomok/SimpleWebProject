@@ -1,13 +1,9 @@
 ﻿@model WebAppTry3.Controllers.PlayerController.FullTrackList
-
 @{
     ViewData["Title"] = "Player";
 }
 @ViewData["SomeMessage"]
 
-
-@*<a>@User.FindFirst("UserName").Value</a>
-    <a>@ViewData["EmailMessege"]</a>*@
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,15 +23,12 @@
             </div>
             <div class="col-md-5">
                 <div class="form-group">
-                    <input type="url" id="TestUrlForAjax" class="form-control" placeholder="Insert your url" />
+                    <input type="url" id="AddUrlForAjax" class="form-control" placeholder="Insert your url" />
                 </div>
             </div>
             <div class="col-md-1">
-                <button id="TestButtonForAjax" value="Save" class="btn btn-primary">Add</button>
+                <button id="AddButtonForAjax" value="Save" class="btn btn-primary">Add</button>
             </div>
-
-
-
 
             <div id="OutputTable" >
                 @Html.Partial("PlayerPartialView", Model)
@@ -46,11 +39,3 @@
     </div>
 </body>
 </html>
-
-@*@section scripts {
-    <script>
-        //location.reload();
-
-        
-    </script>
-}*@

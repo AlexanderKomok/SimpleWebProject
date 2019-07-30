@@ -1,7 +1,8 @@
 ﻿@model WebAppTry3.Controllers.PlayerController.FullTrackList
 
 @{
-    var i = 0;
+    var a = 0;
+    var b = 0;
 }
 
 <div class="container" id="OutputTableFromView">
@@ -12,7 +13,7 @@
             @foreach (var item in Model.ListPlay)
             {
                 <div class="item">
-                    <div id="playing1" @*class="name" *@><span>@item.TrackName</span></div>
+                    <div id="playing1" *@><span>@item.TrackName</span></div>
                     <input type="hidden" id="PlayItem" value="@item.TrackUrl" />
                 </div>
             }
@@ -26,8 +27,8 @@
             {
                 <div class="item">
                     <div id="list-to-play1"><span>@item.TrackName</span></div>
-                    <input type="hidden" id="@("track"+i)" value="@item.TrackUrl" />
-                    @{i++;}
+                    <input type="hidden" id="@("track"+a)" value="@item.TrackUrl" />
+                    @{a++;}
                 </div>
             }
         </div>
@@ -38,10 +39,11 @@
             @*Output history*@
             @foreach (var item in Model.ListHistory)
             {
-                <div class="item">
-                    <div id="history1"><span>@item.TrackName</span></div>
-                    <input type="hidden" value="@item.TrackUrl" />
-                </div>
+            <div class="item">
+                <div id="history1"><span>@item.TrackName</span></div>
+                <input type="hidden" id="@("history"+b)" value="@item.TrackUrl" />
+                @{b++;}
+            </div>
             }
         </div>
     </div>

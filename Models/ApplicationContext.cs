@@ -11,8 +11,6 @@ namespace WebAppTry3.Models
         {
         }
 
-        //
-
         public DbSet<Track> Tracks { get; set; }
         public DbSet<User> DBUsers { get; set; }
 
@@ -36,19 +34,11 @@ namespace WebAppTry3.Models
             modelBuilder.Entity<Track>()
                 .Property(t => t.TrackID).ValueGeneratedOnAdd();
             modelBuilder.Entity<Track>()
-                .Property(t => t.ArtistName).HasColumnName("Band").HasMaxLength(20);
-            modelBuilder.Entity<Track>()
                 .Property(t => t.TrackName).HasColumnName("Song").HasMaxLength(100);
-            modelBuilder.Entity<Track>()
-                .Property(t => t.Grade).HasColumnName("Grade");
             modelBuilder.Entity<Track>()
                 .Property(t => t.Album).HasColumnName("AlbumName");
             modelBuilder.Entity<Track>()
                 .Property(t => t.TrackUrl).HasColumnName("Link").HasMaxLength(250).IsRequired();
-
-            
-            //Stuffing Album in separate method
-
 
             base.OnModelCreating(modelBuilder);
         }

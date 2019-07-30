@@ -10,7 +10,7 @@ using WebAppTry3.Models;
 namespace WebAppTry3.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20190729142930_Test")]
+    [Migration("20190730141357_Test")]
     partial class Test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -138,13 +138,6 @@ namespace WebAppTry3.Migrations
 
                     b.Property<int?>("Album")
                         .HasColumnName("AlbumName");
-
-                    b.Property<string>("ArtistName")
-                        .HasColumnName("Band")
-                        .HasMaxLength(20);
-
-                    b.Property<int?>("Grade")
-                        .HasColumnName("Grade");
 
                     b.Property<string>("TrackName")
                         .HasColumnName("Song")
