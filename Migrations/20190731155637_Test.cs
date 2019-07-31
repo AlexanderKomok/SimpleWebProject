@@ -71,6 +71,25 @@ namespace WebAppTry3.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Album",
+                columns: table => new
+                {
+                    AlbumId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    AlbumName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Album", x => x.AlbumId);
+                    table.ForeignKey(
+                        name: "FK_Album_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
@@ -163,7 +182,7 @@ namespace WebAppTry3.Migrations
                     UserId = table.Column<string>(nullable: true),
                     Link = table.Column<string>(maxLength: 250, nullable: false),
                     Song = table.Column<string>(maxLength: 100, nullable: true),
-                    AlbumName = table.Column<int>(nullable: true)
+                    PlayerState = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -175,6 +194,35 @@ namespace WebAppTry3.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "ConnectEntity",
+                columns: table => new
+                {
+                    TrackId = table.Column<Guid>(nullable: false),
+                    AlbumId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConnectEntity", x => new { x.TrackId, x.AlbumId });
+                    table.ForeignKey(
+                        name: "FK_ConnectEntity_Album_AlbumId",
+                        column: x => x.AlbumId,
+                        principalTable: "Album",
+                        principalColumn: "AlbumId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ConnectEntity_Tracks_TrackId",
+                        column: x => x.TrackId,
+                        principalTable: "Tracks",
+                        principalColumn: "TrackID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Album_UserId",
+                table: "Album",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -216,6 +264,11 @@ namespace WebAppTry3.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ConnectEntity_AlbumId",
+                table: "ConnectEntity",
+                column: "AlbumId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tracks_UserId",
                 table: "Tracks",
                 column: "UserId");
@@ -239,10 +292,16 @@ namespace WebAppTry3.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Tracks");
+                name: "ConnectEntity");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Album");
+
+            migrationBuilder.DropTable(
+                name: "Tracks");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

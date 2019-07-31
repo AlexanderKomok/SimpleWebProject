@@ -1,14 +1,9 @@
 ﻿var songId;
 var songUrl;
 $(document).ready(function () {
-
     AddNewUrl();
 
     PlayOnClick();
-
-
-
-
     let NextUrl = $("#track0").val();
     songUrl = NextUrl;
 });
@@ -64,15 +59,16 @@ function onYouTubeIframeAPIReady() {
     })
     function GetId() {
         var nowUrl = $("#PlayItem").val();
-        var re = /^(https?:\/\/)?((www\.)?(youtube(-nocookie)?|youtube.googleapis)\.com.*(v\/|v=|vi=|vi\/|e\/|embed\/|user\/.*\/u\/\d+\/)|youtu\.be\/)([_0-9a-z-]+)/i;
-        var songId = nowUrl.match(re)[7];
+        var re = /^(https?:\/\/)?((www\.)?(music\.)?(youtube(-nocookie)?|youtube.googleapis)\.com.*(v\/|v=|vi=|vi\/|e\/|embed\/|user\/.*\/u\/\d+\/)|youtu\.be\/)([_0-9a-z-]+)/i;
+        var songId = nowUrl.match(re)[8];
         return songId;
     }
 }
 
 function AddNewUrl() {
     //$('#AddButtonForAjax').unbind('click');
-    $('#AddButtonForAjax').on('click', function () {
+    $('#AddButtonForAjax').off('click');
+    $('#AddButtonForAjax').on('click', function () {        
         var url = $("#AddUrlForAjax").val();
         var title;
         $.ajax({
@@ -87,25 +83,11 @@ function AddNewUrl() {
                     type: "POST",
                     url: "Player/CreateFromPlayer",
                     data: { url: url, title: title },
-                    success: function () {
-                        //In future it will work
-                        //var html = "<div class='item'>" + title + "</div> <input type='hidden' value=" />";
-                        //$("#list-to-play").prepend(html);
-
-                        //Its temporary
-                        $.ajax({
-                            type: "GET",
-                            url: "Player/DisplayPartialView",
-                            contentType: 'application/html; charset=utf-8',
-                            dataType: 'html',
-                            async: false,
-                            success: function (data) {
-                                $('.body-content').html(data);
-                                setTimeout(function () { }, 500);
-                                onYouTubeIframeAPIReady();
-                            }
-
-                        })
+                    success: function () {                       
+                        var html = ("<div class='item'>" + title + " <input type='hidden' value=" + url +"> </div>" )
+                        $("#list-to-play").prepend(html);
+                        PlayOnClick();
+                        AddNewUrl();
                     }
                 })
             }
@@ -113,7 +95,6 @@ function AddNewUrl() {
     })
 
 }
-
 
 function PlayOnClick() {
     $('.item').off('click');

@@ -71,5 +71,19 @@ body {
         background-color: #dadada;
     }
 
-.player {
+#list-to-play {
+    height: auto;
+    max-height: 200px;
+    overflow: auto;
+}
+
+#history {
+    height: auto;
+    max-height: 200px;
+    overflow: auto;
+}
+
+#player{
+    bottom: -45px;
+    right: 30px;
 }

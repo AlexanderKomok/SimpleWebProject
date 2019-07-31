@@ -129,13 +129,43 @@ namespace WebAppTry3.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("WebAppTry3.DBEntities.Album", b =>
+                {
+                    b.Property<Guid>("AlbumId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AlbumName")
+                        .HasColumnName("AlbumName");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("AlbumId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Album");
+                });
+
+            modelBuilder.Entity("WebAppTry3.DBEntities.ConnectEntity", b =>
+                {
+                    b.Property<Guid>("TrackId");
+
+                    b.Property<Guid>("AlbumId");
+
+                    b.HasKey("TrackId", "AlbumId");
+
+                    b.HasIndex("AlbumId");
+
+                    b.ToTable("ConnectEntity");
+                });
+
             modelBuilder.Entity("WebAppTry3.DBEntities.Track", b =>
                 {
                     b.Property<Guid>("TrackID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("Album")
-                        .HasColumnName("AlbumName");
+                    b.Property<int?>("PlayerState")
+                        .HasColumnName("PlayerState");
 
                     b.Property<string>("TrackName")
                         .HasColumnName("Song")
@@ -252,6 +282,26 @@ namespace WebAppTry3.Migrations
                     b.HasOne("WebAppTry3.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WebAppTry3.DBEntities.Album", b =>
+                {
+                    b.HasOne("WebAppTry3.Models.User", "User")
+                        .WithMany("Albums")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("WebAppTry3.DBEntities.ConnectEntity", b =>
+                {
+                    b.HasOne("WebAppTry3.DBEntities.Album", "Album")
+                        .WithMany("ConnectEntities")
+                        .HasForeignKey("AlbumId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WebAppTry3.DBEntities.Track", "Track")
+                        .WithMany("ConnectEntities")
+                        .HasForeignKey("TrackId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

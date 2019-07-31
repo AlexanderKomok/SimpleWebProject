@@ -10,5 +10,6 @@ namespace WebAppTry3.Models
         public string FullName { get; set; }
 
         public ICollection<Track> Tracks { get; set; }
+        public ICollection<Album> Albums { get; set; }
     }
 }

@@ -6,6 +6,7 @@ namespace WebAppTry3
 {
     public static class UserAndRoleDataInitializer
     {
+        
         public static void SeedData(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             SeedRoles(roleManager);
@@ -44,6 +45,7 @@ namespace WebAppTry3
                     userManager.AddToRoleAsync(user, "admin").Wait();
                 }
             }
+            
         }
 
         private static void SeedRoles(RoleManager<IdentityRole> roleManager)
@@ -65,5 +67,6 @@ namespace WebAppTry3
                 CreateAsync(role).Result;
             }
         }
+        
     }
 }

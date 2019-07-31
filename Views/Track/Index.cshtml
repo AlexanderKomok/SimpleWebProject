@@ -1,42 +1,45 @@
-﻿@model  IEnumerable<WebAppTry3.DBEntities.Track>
+﻿@model IEnumerable<WebAppTry3.DBEntities.Track>
 
-    @{
-        ViewData["Title"] = "Index";
-    }
+@{
+    ViewData["Title"] = "Index";
+}
 
-    <h2>Edit Tracks</h2>
+<h2>Edit Tracks</h2>
 
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Track Url
-                </th>
-                <th>
-                    Album Name
-                </th>
-                <th>
-                    Track Name
-                </th>
-                <th>
-                    User Name
-                </th>
-                
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+<div class="pull-left">
+    <a asp-action="Create">Create New</a>
+</div>
+<div class="pull-right">
+    <a asp-action="HistoryInListToPlay">Put all songs from History in ListToPlay</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Track Url
+            </th>
+            <th>
+                Player State
+            </th>
+            <th>
+                Track Name
+            </th>
+            <th>
+                User Name
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
             <tr>
                 <td>
                     @item.TrackUrl
                 </td>
                 <td>
-                    @item.Album
+                    @item.PlayerState
                 </td>
                 <td>
                     @item.TrackName
@@ -45,11 +48,13 @@
                     @item.User?.FullName
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.TrackID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.TrackID">Details</a> |
+                    @if (User.IsInRole("admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.TrackID">Edit</a>
+                    }
                     <a asp-action="Delete" asp-route-id="@item.TrackID">Delete</a>
                 </td>
             </tr>
-            }
-        </tbody>
-    </table>
+        }
+    </tbody>
+</table>

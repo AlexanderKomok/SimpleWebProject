@@ -117,9 +117,9 @@ namespace WebAppTry3.Controllers
         public async Task<IActionResult> DisplayPartialView()
         {            
             var FullSortTrackList = new FullTrackList();
-            FullSortTrackList.ListPlay = _context.Tracks.Where(alb => alb.Album.Value == Album.Play).ToList();
-            FullSortTrackList.ListToPlay = _context.Tracks.Where(alb => alb.Album.Value == Album.ListToPlay).ToList();
-            FullSortTrackList.ListHistory = _context.Tracks.Where(alb => alb.Album.Value == Album.History).ToList();
+            FullSortTrackList.ListPlay = _context.Tracks.Where(alb => alb.PlayerState.Value == PlayerState.Play).ToList();
+            FullSortTrackList.ListToPlay = _context.Tracks.Where(alb => alb.PlayerState.Value == PlayerState.ListToPlay).ToList();
+            FullSortTrackList.ListHistory = _context.Tracks.Where(alb => alb.PlayerState.Value == PlayerState.History).ToList();
             var partialViewHtml = await this.RenderViewAsync("Index", FullSortTrackList);
             return Ok(partialViewHtml);
 
@@ -129,9 +129,9 @@ namespace WebAppTry3.Controllers
         {
             var EmailContext = _httpContextAccessor.HttpContext.User.FindFirst("Email").Value;
             var FullSortTrackList = new FullTrackList();
-            FullSortTrackList.ListPlay = _context.Tracks.Where(alb => alb.Album.Value == Album.Play).ToList();
-            FullSortTrackList.ListToPlay = _context.Tracks.Where(alb => alb.Album.Value == Album.ListToPlay).ToList();
-            FullSortTrackList.ListHistory = _context.Tracks.Where(alb => alb.Album.Value == Album.History).ToList();
+            FullSortTrackList.ListPlay = _context.Tracks.Where(alb => alb.PlayerState.Value == PlayerState.Play).ToList();
+            FullSortTrackList.ListToPlay = _context.Tracks.Where(alb => alb.PlayerState.Value == PlayerState.ListToPlay).ToList();
+            FullSortTrackList.ListHistory = _context.Tracks.Where(alb => alb.PlayerState.Value == PlayerState.History).ToList();
 
             return View(FullSortTrackList);
         }
@@ -150,7 +150,7 @@ namespace WebAppTry3.Controllers
             {
                 var trackOwn = _context.DBUsers.FirstOrDefault(to => to.UserName == User.Identity.Name);
                 var UserIdFromLINQ = trackOwn.Id;
-                _context.Tracks.Add(new Track { TrackID = Guid.NewGuid(), Album = Album.ListToPlay, TrackUrl = url, TrackName = title, UserId = UserIdFromLINQ});
+                _context.Tracks.Add(new Track { TrackID = Guid.NewGuid(), PlayerState = PlayerState.ListToPlay, TrackUrl = url, TrackName = title, UserId = UserIdFromLINQ});
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index", "Player");
@@ -168,12 +168,12 @@ namespace WebAppTry3.Controllers
             if (ModelState.IsValid)
             {
                 //Get what's playing now and send to history
-                var PlaySong = _context.Tracks.FirstOrDefault(alb => alb.Album.Value == Album.Play);
-                PlaySong.Album = Album.History;
+                var PlaySong = _context.Tracks.FirstOrDefault(alb => alb.PlayerState.Value == PlayerState.Play);
+                PlaySong.PlayerState = PlayerState.History;
 
                 //Get a song from the playlist and move to playable
                 var TrackEntity = _context.Tracks.FirstOrDefault(o => o.TrackUrl == songUrl);
-                TrackEntity.Album = Album.Play;
+                TrackEntity.PlayerState = PlayerState.Play;
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index", "Player");

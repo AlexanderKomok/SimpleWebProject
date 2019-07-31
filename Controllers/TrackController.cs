@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using WebAppTry3.DBEntities;
 using WebAppTry3.Models;
 
@@ -28,27 +27,6 @@ namespace WebAppTry3.Controllers
             var track = await applicationContext.ToListAsync();
 
             return View(track);     
-        }
-
-
-
-        // GET: Track/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var track = await _context.Tracks
-                .Include(t => t.User)
-                .FirstOrDefaultAsync(m => m.TrackID == id);
-            if (track == null)
-            {
-                return NotFound();
-            }
-
-            return View(track);
         }
 
         // GET: Track/Create
@@ -113,6 +91,8 @@ namespace WebAppTry3.Controllers
             {
                 try
                 {
+                    var trackOwn = _context.DBUsers.FirstOrDefault(to => to.UserName == User.Identity.Name);
+                    track.UserId = trackOwn.Id;
                     _context.Update(track);
                     await _context.SaveChangesAsync();
                 }
@@ -128,10 +108,20 @@ namespace WebAppTry3.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            //ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", track.UserId);
+            };
 
             return View(track);
+        }
+
+        public async Task<IActionResult> HistoryInListToPlay()
+        {
+            foreach(var item in _context.Tracks.Where(i => i.PlayerState == PlayerState.History).ToList())
+            {
+                item.PlayerState = PlayerState.ListToPlay;
+                await _context.SaveChangesAsync();
+            }
+            
+            return RedirectToAction("Index", "Track");
         }
 
         // GET: Track/Delete/5
