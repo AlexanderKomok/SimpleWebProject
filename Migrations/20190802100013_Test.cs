@@ -71,7 +71,7 @@ namespace WebAppTry3.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Album",
+                name: "Albums",
                 columns: table => new
                 {
                     AlbumId = table.Column<Guid>(nullable: false),
@@ -80,9 +80,9 @@ namespace WebAppTry3.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Album", x => x.AlbumId);
+                    table.PrimaryKey("PK_Albums", x => x.AlbumId);
                     table.ForeignKey(
-                        name: "FK_Album_AspNetUsers_UserId",
+                        name: "FK_Albums_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -196,23 +196,24 @@ namespace WebAppTry3.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ConnectEntity",
+                name: "Track_Albums",
                 columns: table => new
                 {
                     TrackId = table.Column<Guid>(nullable: false),
-                    AlbumId = table.Column<Guid>(nullable: false)
+                    AlbumId = table.Column<Guid>(nullable: false),
+                    Track_AlbumId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ConnectEntity", x => new { x.TrackId, x.AlbumId });
+                    table.PrimaryKey("PK_Track_Albums", x => new { x.TrackId, x.AlbumId });
                     table.ForeignKey(
-                        name: "FK_ConnectEntity_Album_AlbumId",
+                        name: "FK_Track_Albums_Albums_AlbumId",
                         column: x => x.AlbumId,
-                        principalTable: "Album",
+                        principalTable: "Albums",
                         principalColumn: "AlbumId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ConnectEntity_Tracks_TrackId",
+                        name: "FK_Track_Albums_Tracks_TrackId",
                         column: x => x.TrackId,
                         principalTable: "Tracks",
                         principalColumn: "TrackID",
@@ -220,8 +221,8 @@ namespace WebAppTry3.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Album_UserId",
-                table: "Album",
+                name: "IX_Albums_UserId",
+                table: "Albums",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -264,8 +265,8 @@ namespace WebAppTry3.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ConnectEntity_AlbumId",
-                table: "ConnectEntity",
+                name: "IX_Track_Albums_AlbumId",
+                table: "Track_Albums",
                 column: "AlbumId");
 
             migrationBuilder.CreateIndex(
@@ -292,13 +293,13 @@ namespace WebAppTry3.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ConnectEntity");
+                name: "Track_Albums");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Album");
+                name: "Albums");
 
             migrationBuilder.DropTable(
                 name: "Tracks");

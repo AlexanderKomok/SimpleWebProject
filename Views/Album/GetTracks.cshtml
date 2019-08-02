@@ -1,0 +1,112 @@
+﻿@model IEnumerable<WebAppTry3.DBEntities.Track>
+@using WebAppTry3.DBEntities
+
+@{
+    ViewData["Title"] = "Tracks";
+}
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<h2>All Tracks</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Track Url
+            </th>
+            <th>
+                Player State
+            </th>
+            <th>
+                Track Name
+            </th>
+            <th>
+                User Name
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="trackItem">
+                <td>
+                    <div id="trackUrl">
+                        @item.TrackUrl
+                    </div>
+                    <input type="hidden" id="urlItem" value1="@item.TrackID" value2="@ViewBag.albumId" />
+                </td>
+                <td>
+                    <div>
+                        @item.PlayerState
+                    </div>
+                </td>
+                <td>
+                    <div id="trackName">
+                        @item.TrackName
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        @item.User?.FullName
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section scripts
+    {
+    <script>
+        $(document).ready(function () {
+            //$('.trackItem').off('click');
+            $('.trackItem').on('click', function () {
+                var TrackId = $(this).find('input').attr("value1");
+                var AlbumId = $(this).find('input').attr("value2");
+                console.log(TrackId);
+                console.log(AlbumId);
+
+                //var step0001 = $(this);
+                //var col1 = step0001.find('td:first').text();
+                //console.log(col1);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Album/InAlbum",
+                    data: { AlbumId: AlbumId, TrackId : TrackId},
+                    async: false,
+                    success: function () {
+                        console.log("DataInController")
+                        ////
+                        //$.ajax({
+                        //    type: "GET",
+                        //    url: "",
+                        //    contentType: 'application/html; charset=utf-8',
+                        //    dataType: 'html',
+                        //    async: false,
+                        //    success: function (data) {
+                        //        //$('.body-content').html(data);
+                        //        //setTimeout(function () { }, 500);
+                        //    }
+
+                        //})
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+
+                })
+            })
+
+        });
+    </script>
+}

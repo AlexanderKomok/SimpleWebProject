@@ -20,7 +20,7 @@ namespace WebAppTry3.DBEntities
         public PlayerState? PlayerState { get; set; }
 
         public User User { get; set; }
-        public IList<ConnectEntity> ConnectEntities { get; set; }
+        public IList<Track_Album> ConnectEntities { get; set; }
     }
 
 

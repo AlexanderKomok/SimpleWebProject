@@ -1,0 +1,37 @@
+﻿@model List<WebAppTry3.DBEntities.Album>
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+
+<h2>Edit Albums</h2>
+<a asp-action="Create">Create New</a>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                AlbumName
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.AlbumName
+                </td>
+                <td>
+                    <a asp-action="OutputAllTrackFromAlbum" asp-route-AlbumId="@item.AlbumId">Get all track from album</a>
+                </td>
+                <td>
+                    <a asp-action="GetTracks" asp-route-AlbumId="@item.AlbumId">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

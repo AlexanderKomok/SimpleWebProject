@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebAppTry3.DBEntities;
 
@@ -12,20 +13,22 @@ namespace WebAppTry3.Models
         }
 
         public DbSet<Track> Tracks { get; set; }
+        public DbSet<Track_Album> Track_Albums { get; set; }
+        public DbSet<Album> Albums { get; set; }
         public DbSet<User> DBUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Realization relationship many to many between Track and Album in EF Core
 
-            modelBuilder.Entity<ConnectEntity>().HasKey(ce =>  new{ce.TrackId, ce.AlbumId });
+            modelBuilder.Entity<Track_Album>().HasKey(ce =>  new{ce.TrackId, ce.AlbumId });
 
-            modelBuilder.Entity<ConnectEntity>()
+            modelBuilder.Entity<Track_Album>()
                 .HasOne<Track>(ce => ce.Track)
                 .WithMany(t => t.ConnectEntities)
                 .HasForeignKey(ce => ce.TrackId);
 
-            modelBuilder.Entity<ConnectEntity>()
+            modelBuilder.Entity<Track_Album>()
                 .HasOne<Album>(ce => ce.Album)
                 .WithMany(a => a.ConnectEntities)
                 .HasForeignKey(ce => ce.AlbumId);
@@ -37,8 +40,6 @@ namespace WebAppTry3.Models
                 .HasOne<User>(a => a.User)
                 .WithMany(dbu => dbu.Albums)
                 .HasForeignKey(a => a.UserId);
-
-            //Once upon a time they were here
 
             //Realization relationship one to many between User and Track in EF Core
             modelBuilder.Entity<Track>()
@@ -62,8 +63,18 @@ namespace WebAppTry3.Models
             modelBuilder.Entity<Album>()
                 .Property(a => a.AlbumName).HasColumnName("AlbumName");
 
+            //Stuffing Track_Album inseparate method
+            modelBuilder.Entity<Track_Album>()
+                .Property(ta => ta.Track_AlbumId).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Track_Album>()
+                .Property(ta => ta.TrackId).HasColumnName("TrackId");
+            modelBuilder.Entity<Track_Album>()
+                .Property(ta => ta.AlbumId).HasColumnName("AlbumId");
+
             base.OnModelCreating(modelBuilder);
         }
+
+        
     }
 
 }

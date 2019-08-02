@@ -51,7 +51,7 @@ namespace WebAppTry3.Controllers
             {
                 return NotFound();
             }
-            EditUserViewModel model = new EditUserViewModel { Id = user.Id, Email = user.Email, FullName = user.FullName, UserName = user.UserName, Year = user.Year };
+            EditUserViewModel model = new EditUserViewModel { Id = user.Id, Email = user.Email, FullName = user.FullName, UserName = user.UserName };
             return View(model);
         }
 
@@ -66,7 +66,6 @@ namespace WebAppTry3.Controllers
                     user.Email = model.Email;
                     user.UserName = model.UserName;
                     user.FullName = model.FullName;
-                    user.Year = model.Year;
 
                     var result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)

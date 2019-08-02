@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace WebAppTry3.DBEntities
 {
-    public class ConnectEntity
+    public class Track_Album
     {
+        public Guid Track_AlbumId { get; set; }
         public Guid TrackId { get; set; }
         public Track Track { get; set; }
 

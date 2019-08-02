@@ -15,6 +15,6 @@ namespace WebAppTry3.DBEntities
         public string AlbumName { get; set; }
 
         public User User { get; set; }
-        public IList<ConnectEntity> ConnectEntities { get; set; }
+        public IList<Track_Album> ConnectEntities { get; set; }
     }
 }

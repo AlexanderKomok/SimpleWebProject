@@ -31,9 +31,7 @@ namespace WebAppTry3.Controllers
 
         // GET: Track/Create
         public IActionResult Create()
-        {
-            ViewData["UserId"] = new SelectList(_context.DBUsers, "Id", "UserName");
-
+        {                       
             return View();
         }
 
@@ -42,7 +40,7 @@ namespace WebAppTry3.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TrackID,Album,UserId,TrackUrl,ArtistName,TrackName")] Track track)
+        public async Task<IActionResult> Create([Bind("TrackID,PlayerState,UserId,TrackUrl,ArtistName,TrackName")] Track track)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +78,7 @@ namespace WebAppTry3.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("TrackID,UserId,TrackUrl,ArtistName,TrackName,Album")] Track track)
+        public async Task<IActionResult> Edit(Guid id, [Bind("TrackID,UserId,TrackUrl,ArtistName,TrackName,PlayerState")] Track track)
         {
             if (id != track.TrackID)
             {

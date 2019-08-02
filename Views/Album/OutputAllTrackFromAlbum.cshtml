@@ -1,0 +1,50 @@
+﻿@model IEnumerable<WebAppTry3.DBEntities.Track>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>All Tracks</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Track Url
+            </th>
+            <th>
+                Player State
+            </th>
+            <th>
+                Track Name
+            </th>
+            <th>
+                User Name
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="trackItem">
+                <td id="trackUrl">
+                    @item.TrackUrl
+                </td>
+                <td>
+                    @item.PlayerState
+                </td>
+                <td>
+                    @item.TrackName
+                </td>
+                <td>
+                    @item.User?.FullName
+                </td>               
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
