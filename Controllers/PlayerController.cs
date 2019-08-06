@@ -107,12 +107,12 @@ namespace WebAppTry3.Controllers
             }
         }
 
-        public class FullTrackList
-        {
-            public List<Track> ListPlay { get; set; }
-            public List<Track> ListToPlay { get; set; }
-            public List<Track> ListHistory { get; set; }
-        }
+        //public class FullTrackList
+        //{
+        //    public List<Track> ListPlay { get; set; }
+        //    public List<Track> ListToPlay { get; set; }
+        //    public List<Track> ListHistory { get; set; }
+        //}
 
         public async Task<IActionResult> DisplayPartialView()
         {            

@@ -1,0 +1,20 @@
+﻿@model WebAppTry3.Controllers.AlbumController.OutputGetTracks
+@using WebAppTry3.DBEntities
+
+<h2>All Tracks</h2>
+
+<table class="table">
+    <tbody>
+        @foreach (var item in Model.AllTrackList)
+        {
+            <tr class="trackItem">
+                <td>
+                    <div id="trackName">
+                        @item.TrackName
+                        <input type="hidden" id="urlItem" value1="@item.TrackID" />
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

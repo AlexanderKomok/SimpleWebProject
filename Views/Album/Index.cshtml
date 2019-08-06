@@ -26,11 +26,18 @@
                     @item.AlbumName
                 </td>
                 <td>
-                    <a asp-action="OutputAllTrackFromAlbum" asp-route-AlbumId="@item.AlbumId">Get all track from album</a>
+                    <a asp-action="PlayAlbum" asp-route-AlbumId="@item.AlbumId">Play album</a>
                 </td>
                 <td>
-                    <a asp-action="GetTracks" asp-route-AlbumId="@item.AlbumId">Details</a>
+                    <a asp-action="GetTracks" asp-route-AlbumId="@item.AlbumId">Edit album</a>
                 </td>
+                <td>
+                    <a asp-action="OutputAllTrackFromAlbum" asp-route-AlbumId="@item.AlbumId">Display tracks</a>
+                </td>
+                <td>
+                    <a asp-action="DeleteAlbum" asp-route-AlbumId="@item.AlbumId">Delete album</a>
+                </td>
+
             </tr>
         }
     </tbody>

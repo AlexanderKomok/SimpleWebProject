@@ -1,4 +1,4 @@
-﻿@model WebAppTry3.Controllers.PlayerController.FullTrackList
+﻿@model WebAppTry3.Models.FullTrackList
 @{
     ViewData["Title"] = "Player";
 }
@@ -14,7 +14,7 @@
 <body>
 
     <h2>YouTube Player</h2>
-    <div class="container">
+    <div class="container col-md-12">
         <div class="row">
             <div id="player" class="col-md-6">
                 @*<iframe width="560" height="315"
@@ -29,7 +29,6 @@
             <div class="col-md-1">
                 <button id="AddButtonForAjax" value="Save" class="btn btn-primary">Add</button>
             </div>
-
             <div id="OutputTable" >
                 @Html.Partial("PlayerPartialView", Model)
             </div>

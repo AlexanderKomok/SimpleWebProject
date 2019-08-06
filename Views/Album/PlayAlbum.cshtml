@@ -1,0 +1,22 @@
+﻿@model WebAppTry3.Models.FullTrackList
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="~/css/site"></script>
+    <script src="~/js/AlbumPlayerScripts.js"></script>
+</head>
+<body>
+
+    <h2>Album play</h2>
+    <div class="container col-md-12">
+        <div class="row">
+            <div id="player" class="col-md-6">
+            </div>
+            <div id="OutputTable" @*class="col-md-6"*@>
+                @Html.Partial("PlayAlbumPartial", Model)
+            </div>
+
+
+        </div>
+    </div>
+</body>
