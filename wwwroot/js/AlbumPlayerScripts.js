@@ -1,10 +1,15 @@
 ﻿var songUrl;
-let params = new URLSearchParams(location.search);
-var AlbumId = params.get('AlbumId');
+//var params = new URLSearchParams(location.search);
+//var AlbumId = params.get('AlbumId');
+var AlbumId;
 
 $(document).ready(function () {
+    PlayOnClick();
     let NextUrl = $("#track0").val();
     songUrl = NextUrl;
+    var params = new URLSearchParams(location.search);
+    AlbumId = params.get('AlbumId');
+
 });
 
 // load Youtube API code asynchronously
@@ -54,6 +59,36 @@ function onYouTubeIframeAPIReady() {
         }
     })
 }
+
+function PlayOnClick() {
+    $('.item').off('click');
+    $('.item').on('click', function () {
+        var songUrl = $(this).find('input').attr("value");
+        $.ajax({
+            type: "POST",
+            url: "/Album/ChangePlayerStateFromAlbum",
+            data: { songUrl: songUrl, AlbumId: AlbumId },
+            async: false,
+            success: function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/Album/DisplayPlayAlbumPartial",
+                    data: { AlbumId: AlbumId },
+                    async: false,
+                    success: function (data) {
+                        $('.body-content').html(data);
+                        setTimeout(function () { }, 500);
+                        onYouTubeIframeAPIReady();
+                        PlayOnClick();
+                    }
+
+                })
+            },
+
+        })
+    })
+}
+
 
 function GetId() {
     var nowUrl = $("#PlayItem").val();

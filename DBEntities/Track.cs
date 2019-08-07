@@ -17,6 +17,7 @@ namespace WebAppTry3.DBEntities
         public string UserId { get; set; }
         public string TrackUrl { get; set; }
         public string TrackName { get; set; }
+        public int Order { get; set; }
         public PlayerState? PlayerState { get; set; }
 
         public User User { get; set; }

@@ -151,6 +151,8 @@ namespace WebAppTry3.Migrations
                     b.Property<Guid>("TrackID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("Order");
+
                     b.Property<int?>("PlayerState")
                         .HasColumnName("PlayerState");
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -45,6 +46,13 @@ namespace WebAppTry3.Controllers
             if (ModelState.IsValid)
             {
                 track.TrackID = Guid.NewGuid();
+                var allTracks = _context.Tracks.Where(t => t.TrackID != null).ToList();
+                int length = allTracks.Count;
+                if(length != 0)
+                {
+                    length++;
+                }
+                track.Order = length;
                 var trackOwn = _context.DBUsers.FirstOrDefault(to => to.UserName == User.Identity.Name);
                 track.UserId = trackOwn.Id;
 
@@ -119,7 +127,50 @@ namespace WebAppTry3.Controllers
                 await _context.SaveChangesAsync();
             }
             
-            return RedirectToAction("Index", "Track");
+            return RedirectToAction("Index", "Player");
+        }
+
+        public async Task<IActionResult> MixTracks()
+        {
+            var allTracks = _context.Tracks.Where(t => t.PlayerState == PlayerState.ListToPlay);
+
+            Random random = new Random();
+            int length = allTracks.ToList().Count;
+            foreach(var item in allTracks)
+            {
+                item.Order = random.Next(0, length);
+                length--;
+            }
+
+
+            //while (length > 0)
+            //{
+            //    TempOrder = random.Next(0, length);  // get random value between 0 and original length
+            //    TempTrack.Order = TempOrder;
+
+            //    TempList.Add(allTracks[TempOrder]);  // add to temp list
+            //    allTracks.RemoveAt(TempOrder);       // remove from original list
+            //    length = allTracks.Count;            // get new list <T> length.
+            //}
+
+
+            //allTracks = new List<Track>();
+            //allTracks = TempList; // copy all items from temp list to original list.
+
+            //var NonRandom = _context.Tracks.Where(t => t.PlayerState == PlayerState.ListToPlay).ToList();
+
+            //foreach (var item1 in NonRandom)
+            //{
+            //    foreach (var item2 in allTracks)
+            //    {
+            //        item1.Order = item2.Order;
+            //    }
+
+            //}
+            
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Player");
         }
 
         // GET: Track/Delete/5

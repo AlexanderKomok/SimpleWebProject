@@ -182,6 +182,7 @@ namespace WebAppTry3.Migrations
                     UserId = table.Column<string>(nullable: true),
                     Link = table.Column<string>(maxLength: 250, nullable: false),
                     Song = table.Column<string>(maxLength: 100, nullable: true),
+                    Order = table.Column<int>(nullable: false),
                     PlayerState = table.Column<int>(nullable: true)
                 },
                 constraints: table =>

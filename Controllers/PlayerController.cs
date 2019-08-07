@@ -107,18 +107,11 @@ namespace WebAppTry3.Controllers
             }
         }
 
-        //public class FullTrackList
-        //{
-        //    public List<Track> ListPlay { get; set; }
-        //    public List<Track> ListToPlay { get; set; }
-        //    public List<Track> ListHistory { get; set; }
-        //}
-
         public async Task<IActionResult> DisplayPartialView()
         {            
             var FullSortTrackList = new FullTrackList();
             FullSortTrackList.ListPlay = _context.Tracks.Where(alb => alb.PlayerState.Value == PlayerState.Play).ToList();
-            FullSortTrackList.ListToPlay = _context.Tracks.Where(alb => alb.PlayerState.Value == PlayerState.ListToPlay).ToList();
+            FullSortTrackList.ListToPlay = _context.Tracks.Where(alb => alb.PlayerState.Value == PlayerState.ListToPlay).OrderBy(o => o.Order).ToList();
             FullSortTrackList.ListHistory = _context.Tracks.Where(alb => alb.PlayerState.Value == PlayerState.History).ToList();
             var partialViewHtml = await this.RenderViewAsync("Index", FullSortTrackList);
             return Ok(partialViewHtml);
@@ -130,7 +123,7 @@ namespace WebAppTry3.Controllers
             var EmailContext = _httpContextAccessor.HttpContext.User.FindFirst("Email").Value;
             var FullSortTrackList = new FullTrackList();
             FullSortTrackList.ListPlay = _context.Tracks.Where(alb => alb.PlayerState.Value == PlayerState.Play).ToList();
-            FullSortTrackList.ListToPlay = _context.Tracks.Where(alb => alb.PlayerState.Value == PlayerState.ListToPlay).ToList();
+            FullSortTrackList.ListToPlay = _context.Tracks.Where(alb => alb.PlayerState.Value == PlayerState.ListToPlay).OrderBy(o => o.Order).ToList();
             FullSortTrackList.ListHistory = _context.Tracks.Where(alb => alb.PlayerState.Value == PlayerState.History).ToList();
 
             return View(FullSortTrackList);
@@ -150,7 +143,13 @@ namespace WebAppTry3.Controllers
             {
                 var trackOwn = _context.DBUsers.FirstOrDefault(to => to.UserName == User.Identity.Name);
                 var UserIdFromLINQ = trackOwn.Id;
-                _context.Tracks.Add(new Track { TrackID = Guid.NewGuid(), PlayerState = PlayerState.ListToPlay, TrackUrl = url, TrackName = title, UserId = UserIdFromLINQ});
+                var allTracks = _context.Tracks.Where(t => t.TrackID != null).ToList();
+                int length = allTracks.Count;
+                if (length != 0)
+                {
+                    length++;
+                }                
+                _context.Tracks.Add(new Track { TrackID = Guid.NewGuid(), PlayerState = PlayerState.ListToPlay, TrackUrl = url, TrackName = title, UserId = UserIdFromLINQ, Order = length});
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index", "Player");

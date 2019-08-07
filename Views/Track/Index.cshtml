@@ -10,7 +10,10 @@
     <a asp-action="Create">Create New</a>
 </div>
 <div class="pull-right">
-    <a asp-action="HistoryInListToPlay">Put all songs from History in ListToPlay</a>
+    <a asp-controller="Track" asp-action="HistoryInListToPlay">Put all songs from History in ListToPlay</a>
+</div>
+<div class="col-lg-4">
+    <a asp-controller="Track" asp-action="MixTracks">Mix Tracks</a>
 </div>
 
 <table class="table">

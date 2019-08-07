@@ -242,36 +242,51 @@ namespace WebAppTry3.Controllers
 
         //--------------------------------< Album player code >--------------------------------
 
-
+        //Add Play
         public IActionResult PlayAlbum(Guid albumId)
         {
             //Get current album
             var currAlb = _context.Track_Albums.Where(ta => ta.AlbumId == albumId);
             var FullSortTrackList = new FullTrackList();
+
+            List<Track> ListPlay = new List<Track>();          
+            //Check if tracks in album have PlayerState.Play
             foreach (var item in currAlb)
             {
-                //If Album have track in play fill in FullSortTrackList.ListPlay
-                var currTrack = _context.Tracks.Where(t => t.TrackID == item.TrackId).Where(t => t.PlayerState == PlayerState.Play);
-                if (currTrack.FirstOrDefault() != null)
+                var currTrack = _context.Tracks.Where(t => t.TrackID == item.TrackId).Where(t => t.PlayerState == PlayerState.Play).FirstOrDefault();
+                if (currTrack != null)
                 {
-                    FullSortTrackList.ListPlay = currTrack.ToList();
+                    ListPlay.Add(currTrack);
+                    break;
                 }
             }
 
-            //Rebuild logic or create other 
-            //if (FullSortTrackList.ListPlay == null)
-            //{
-            //    //Current track from play to ListToPlay
-            //    var playTrack = _context.Tracks.FirstOrDefault(t => t.PlayerState == PlayerState.Play);
-            //    playTrack.PlayerState = PlayerState.ListToPlay;
-            //    _context.SaveChanges();
-            //    //Track from Album to play
-                
-            //    var trackFromAlbum = _context.Tracks.FirstOrDefault(t => t.TrackID == currTrack.TrackId);
-            //    trackFromAlbum.PlayerState = PlayerState.Play;
-            //    _context.SaveChanges();
-            //    FullSortTrackList.ListPlay = _context.Tracks.Where(t => t.PlayerState == PlayerState.Play).ToList();
-            //}
+            //If not
+            //(ListPlay!= null) && (!ListPlay.Any())
+            if (ListPlay.Any() == false)
+            {
+
+                foreach (var item in currAlb)
+                {
+                    //Get first track from Album ListToPlay
+                    var nextTrack = _context.Tracks.Where(t => t.TrackID == item.TrackId).Where(t => t.PlayerState == PlayerState.ListToPlay).FirstOrDefault();
+                    if (nextTrack != null)
+                    {
+                        //Current track from play to ListToPlay
+                        var playTrack = _context.Tracks.FirstOrDefault(t => t.PlayerState == PlayerState.Play);
+                        playTrack.PlayerState = PlayerState.ListToPlay;
+
+                        //Track from Album to play                        
+                        nextTrack.PlayerState = PlayerState.Play;
+                        ListPlay.Add(nextTrack);
+                        break;
+                    }
+
+                }
+                _context.SaveChanges();                
+
+            }
+            FullSortTrackList.ListPlay = ListPlay;                       
 
             //Add ListToPlay
             List<Track> ListToPlayTracks = new List<Track>();
@@ -315,7 +330,7 @@ namespace WebAppTry3.Controllers
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("PlayAlbum");
+            return RedirectToAction("PlayAlbum", "Album", new { albumId = albumId });
         }
 
         //
@@ -329,7 +344,7 @@ namespace WebAppTry3.Controllers
             var currTrack = _context.Tracks.Where(t => t.PlayerState == PlayerState.Play).FirstOrDefault();
             PlayTrack.Add(currTrack);
             FullSortTrackList.ListPlay = PlayTrack;
-            
+
 
             //Add ListToPlay
             List<Track> ListToPlayTracks = new List<Track>();

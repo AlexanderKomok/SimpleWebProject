@@ -10,7 +10,7 @@ using WebAppTry3.Models;
 namespace WebAppTry3.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20190802100013_Test")]
+    [Migration("20190807123720_Test")]
     partial class Test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -152,6 +152,8 @@ namespace WebAppTry3.Migrations
                 {
                     b.Property<Guid>("TrackID")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Order");
 
                     b.Property<int?>("PlayerState")
                         .HasColumnName("PlayerState");
